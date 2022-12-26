@@ -14,4 +14,19 @@ def sigma(dists, kth=8):
         # Get k-nearest neighbors for each node
         knns = np.partition(dists, kth, axis=-1)[:, kth::-1]
         sigma = knns.sum(axis=1).reshape((knns.shape[0], 1))/kth
-    except ValueError:     # handling for graphs with num_n
+    except ValueError:     # handling for graphs with num_nodes less than kth
+        num_nodes = dists.shape[0]
+        # this sigma value is irrelevant since not used for final compute_edge_list
+        sigma = np.array([1]*num_nodes).reshape(num_nodes,1)
+        
+    return sigma + 1e-8 # adding epsilon to avoid zero value of sigma
+
+
+def compute_adjacency_matrix_images(coord, feat, use_feat=True, kth=8):
+    coord = coord.reshape(-1, 2)
+    # Compute coordinate distance
+    c_dist = cdist(coord, coord)
+    
+    if use_feat:
+        # Compute feature distance
+   
