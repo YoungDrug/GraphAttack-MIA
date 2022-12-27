@@ -48,4 +48,15 @@ def compute_edges_list(A, kth=8+1):
     new_kth = num_nodes - kth
     
     if num_nodes > 9:
-        knns = np.argpartition(A, new_kth-1,
+        knns = np.argpartition(A, new_kth-1, axis=-1)[:, new_kth:-1]
+        knn_values = np.partition(A, new_kth-1, axis=-1)[:, new_kth:-1] # NEW
+    else:
+        # handling for graphs with less than kth nodes
+        # in such cases, the resulting graph will be fully connected
+        knns = np.tile(np.arange(num_nodes), num_nodes).reshape(num_nodes, num_nodes)
+        knn_values = A # NEW
+        
+        # removing self loop
+        if num_nodes != 1:
+            knn_values = A[knns != np.arange(num_nodes)[:,None]].reshape(num_nodes,-1) # NEW
+            knns = knns[knns != np.arange(num_node
