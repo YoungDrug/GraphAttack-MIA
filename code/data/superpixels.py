@@ -29,4 +29,23 @@ def compute_adjacency_matrix_images(coord, feat, use_feat=True, kth=8):
     
     if use_feat:
         # Compute feature distance
-   
+        f_dist = cdist(feat, feat)
+        # Compute adjacency
+        A = np.exp(- (c_dist/sigma(c_dist))**2 - (f_dist/sigma(f_dist))**2 )
+    else:
+        A = np.exp(- (c_dist/sigma(c_dist))**2)
+        
+    # Convert to symmetric matrix
+    A = 0.5 * (A + A.T)
+    A[np.diag_indices_from(A)] = 0
+    return A        
+
+
+def compute_edges_list(A, kth=8+1):
+    # Get k-similar neighbor indices for each node
+
+    num_nodes = A.shape[0]
+    new_kth = num_nodes - kth
+    
+    if num_nodes > 9:
+        knns = np.argpartition(A, new_kth-1,
