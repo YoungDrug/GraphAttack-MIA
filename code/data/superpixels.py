@@ -78,4 +78,15 @@ class SuperPixDGL(torch.utils.data.Dataset):
         if dataset == 'MNIST':
             self.img_size = 28
             with open(os.path.join(data_dir, 'mnist_75sp_%s.pkl' % split), 'rb') as f:
-                self.l
+                self.labels, self.sp_data = pickle.load(f)
+                self.graph_labels = torch.LongTensor(self.labels)
+        elif dataset == 'CIFAR10':
+            self.img_size = 32
+            with open(os.path.join(data_dir, 'cifar10_150sp_%s.pkl' % split), 'rb') as f:
+                self.labels, self.sp_data = pickle.load(f)
+                self.graph_labels = torch.LongTensor(self.labels)
+                
+        self.use_mean_px = use_mean_px
+        self.use_coord = use_coord
+        self.n_samples = len(self.labels)
+      
