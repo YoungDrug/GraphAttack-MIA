@@ -59,4 +59,23 @@ def compute_edges_list(A, kth=8+1):
         # removing self loop
         if num_nodes != 1:
             knn_values = A[knns != np.arange(num_nodes)[:,None]].reshape(num_nodes,-1) # NEW
-            knns = knns[knns != np.arange(num_node
+            knns = knns[knns != np.arange(num_nodes)[:,None]].reshape(num_nodes,-1)
+    return knns, knn_values # NEW
+
+
+class SuperPixDGL(torch.utils.data.Dataset):
+    def __init__(self,
+                 data_dir,
+                 dataset,
+                 split,
+                 use_mean_px=True,
+                 use_coord=True):
+
+        self.split = split
+        
+        self.graph_lists = []
+        
+        if dataset == 'MNIST':
+            self.img_size = 28
+            with open(os.path.join(data_dir, 'mnist_75sp_%s.pkl' % split), 'rb') as f:
+                self.l
