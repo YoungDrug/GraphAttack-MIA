@@ -89,4 +89,16 @@ class SuperPixDGL(torch.utils.data.Dataset):
         self.use_mean_px = use_mean_px
         self.use_coord = use_coord
         self.n_samples = len(self.labels)
-      
+        
+        self._prepare()
+    
+    def _prepare(self):
+        print("preparing %d graphs for the %s set..." % (self.n_samples, self.split.upper()))
+        self.Adj_matrices, self.node_features, self.edges_lists, self.edge_features = [], [], [], []
+        for index, sample in enumerate(self.sp_data):
+            mean_px, coord = sample[:2]
+            
+            try:
+                coord = coord / self.img_size
+            except AttributeError:
+                VOC_has_variable_im
