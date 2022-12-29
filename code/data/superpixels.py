@@ -101,4 +101,15 @@ class SuperPixDGL(torch.utils.data.Dataset):
             try:
                 coord = coord / self.img_size
             except AttributeError:
-                VOC_has_variable_im
+                VOC_has_variable_image_sizes = True
+                
+            if self.use_mean_px:
+                A = compute_adjacency_matrix_images(coord, mean_px) # using super-pixel locations + features
+            else:
+                A = compute_adjacency_matrix_images(coord, mean_px, False) # using only super-pixel locations
+            edges_list, edge_values_list = compute_edges_list(A) # NEW
+
+            N_nodes = A.shape[0]
+            
+            mean_px = mean_px.reshape(N_nodes, -1)
+     
