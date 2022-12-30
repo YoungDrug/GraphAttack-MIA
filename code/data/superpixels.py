@@ -112,4 +112,16 @@ class SuperPixDGL(torch.utils.data.Dataset):
             N_nodes = A.shape[0]
             
             mean_px = mean_px.reshape(N_nodes, -1)
+            coord = coord.reshape(N_nodes, 2)
+            x = np.concatenate((mean_px, coord), axis=1)
+
+            edge_values_list = edge_values_list.reshape(-1) # NEW # TO DOUBLE-CHECK !
+            
+            self.node_features.append(x)
+            self.edge_features.append(edge_values_list) # NEW
+            self.Adj_matrices.append(A)
+            self.edges_lists.append(edges_list)
+        
+        for index in range(len(self.sp_data)):
+            g = dgl.DGLGraph()
      
