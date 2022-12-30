@@ -124,4 +124,13 @@ class SuperPixDGL(torch.utils.data.Dataset):
         
         for index in range(len(self.sp_data)):
             g = dgl.DGLGraph()
-     
+            g.add_nodes(self.node_features[index].shape[0])
+            g.ndata['feat'] = torch.Tensor(self.node_features[index]).half() 
+
+            for src, dsts in enumerate(self.edges_lists[index]):
+                # handling for 1 node where the self loop would be the only edge
+                # since, VOC Superpixels has few samples (5 samples) with only 1 node
+                if self.node_features[index].shape[0] == 1:
+                    g.add_edges(src, dsts)
+                else:
+                    g.add_edge
