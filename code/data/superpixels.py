@@ -133,4 +133,15 @@ class SuperPixDGL(torch.utils.data.Dataset):
                 if self.node_features[index].shape[0] == 1:
                     g.add_edges(src, dsts)
                 else:
-                    g.add_edge
+                    g.add_edges(src, dsts[dsts!=src])
+            
+            # adding edge features for Residual Gated ConvNet
+            edge_feat_dim = g.ndata['feat'].shape[1] # dim same as node feature dim
+            #g.edata['feat'] = torch.ones(g.number_of_edges(), edge_feat_dim).half() 
+            g.edata['feat'] = torch.Tensor(self.edge_features[index]).unsqueeze(1).half()  # NEW 
+
+            self.graph_lists.append(g)
+
+    def __len__(self):
+        """Return the number of graphs in the dataset."""
+        return s
