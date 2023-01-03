@@ -144,4 +144,24 @@ class SuperPixDGL(torch.utils.data.Dataset):
 
     def __len__(self):
         """Return the number of graphs in the dataset."""
-        return s
+        return self.n_samples
+
+    def __getitem__(self, idx):
+        """
+            Get the idx^th sample.
+            Parameters
+            ---------
+            idx : int
+                The sample index.
+            Returns
+            -------
+            (dgl.DGLGraph, int)
+                DGLGraph with node feature stored in `feat` field
+                And its label.
+        """
+        return self.graph_lists[idx], self.graph_labels[idx]
+
+
+class DGLFormDataset(torch.utils.data.Dataset):
+    """
+        DGLFormDataset wra
