@@ -164,4 +164,20 @@ class SuperPixDGL(torch.utils.data.Dataset):
 
 class DGLFormDataset(torch.utils.data.Dataset):
     """
-        DGLFormDataset wra
+        DGLFormDataset wrapping graph list and label list as per pytorch Dataset.
+        *lists (list): lists of 'graphs' and 'labels' with same len().
+    """
+    def __init__(self, *lists):
+        assert all(len(lists[0]) == len(li) for li in lists)
+        self.lists = lists
+        self.graph_lists = lists[0]
+        self.graph_labels = lists[1]
+
+    def __getitem__(self, index):
+        return tuple(li[index] for li in self.lists)
+
+    def __len__(self):
+        return len(self.lists[0])
+    
+    
+class SuperPixDatase
