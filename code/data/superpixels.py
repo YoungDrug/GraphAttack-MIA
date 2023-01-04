@@ -180,4 +180,14 @@ class DGLFormDataset(torch.utils.data.Dataset):
         return len(self.lists[0])
     
     
-class SuperPixDatase
+class SuperPixDatasetDGL(torch.utils.data.Dataset):
+    def __init__(self, name, num_val=5000):
+        """
+            Takes input standard image dataset name (MNIST/CIFAR10) 
+            and returns the superpixels graph.
+            
+            This class uses results from the above SuperPix class.
+            which contains the steps for the generation of the Superpixels
+            graph from a superpixel .pkl file that has been given by
+            https://github.com/bknyaz/graph_attention_pool
+    
