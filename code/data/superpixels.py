@@ -190,4 +190,17 @@ class SuperPixDatasetDGL(torch.utils.data.Dataset):
             which contains the steps for the generation of the Superpixels
             graph from a superpixel .pkl file that has been given by
             https://github.com/bknyaz/graph_attention_pool
-    
+            
+            Please refer the SuperPix class for details.
+        """
+        t_data = time.time()
+        self.name = name
+
+        use_mean_px = True # using super-pixel locations + features
+        use_mean_px = False # using only super-pixel locations
+        if use_mean_px:
+            print('Adj matrix defined from super-pixel locations + features')
+        else:
+            print('Adj matrix defined from super-pixel locations (only)')
+        use_coord = True
+        self.test = SuperPixDGL("./code/data/SPS", dataset=self
