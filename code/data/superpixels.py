@@ -203,4 +203,16 @@ class SuperPixDatasetDGL(torch.utils.data.Dataset):
         else:
             print('Adj matrix defined from super-pixel locations (only)')
         use_coord = True
-        self.test = SuperPixDGL("./code/data/SPS", dataset=self
+        self.test = SuperPixDGL("./code/data/SPS", dataset=self.name, split='test',
+                            use_mean_px=use_mean_px, 
+                            use_coord=use_coord)
+
+        self.train_ = SuperPixDGL("./code/data/SPS", dataset=self.name, split='train',
+                             use_mean_px=use_mean_px, 
+                             use_coord=use_coord)
+
+        _val_graphs, _val_labels = self.train_[:num_val]
+        _train_graphs, _train_labels = self.train_[num_val:]
+
+        self.val = DGLFormDataset(_val_graphs, _val_labels)
+        self.train = DGLFormDataset(_tr
