@@ -215,4 +215,19 @@ class SuperPixDatasetDGL(torch.utils.data.Dataset):
         _train_graphs, _train_labels = self.train_[num_val:]
 
         self.val = DGLFormDataset(_val_graphs, _val_labels)
-        self.train = DGLFormDataset(_tr
+        self.train = DGLFormDataset(_train_graphs, _train_labels)
+
+        print("[I] Data load time: {:.4f}s".format(time.time()-t_data))
+        
+
+def self_loop(g):
+    """
+        Utility function only, to be used only when necessary as per user self_loop flag
+        : Overwriting the function dgl.transform.add_self_loop() to not miss ndata['feat'] and edata['feat']
+        
+        
+        This function is called inside a function in SuperPixDataset class.
+    """
+    new_g = dgl.DGLGraph()
+    new_g.add_nodes(g.number_of_nodes())
+    ne
