@@ -242,4 +242,22 @@ def self_loop(g):
     
     # This new edata is not used since this function gets called only for GCN, GAT
     # However, we need this for the generic requirement of ndata and edata
-    new_g.ed
+    new_g.edata['feat'] = torch.zeros(new_g.number_of_edges())
+    return new_g
+
+
+class SuperPixDataset(torch.utils.data.Dataset):
+
+    def __init__(self, name):
+        """
+            Loading Superpixels datasets
+        """
+        start = time.time()
+        print("[I] Loading dataset %s..." % (name))
+        self.name = name
+
+        data_dir = './code/data/SPS/'
+        with open(data_dir+name+'.pkl',"rb") as f:
+            f = pickle.load(f)
+            self.train = f[0]
+            self.val = f
