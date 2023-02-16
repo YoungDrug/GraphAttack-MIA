@@ -230,4 +230,16 @@ def self_loop(g):
     """
     new_g = dgl.DGLGraph()
     new_g.add_nodes(g.number_of_nodes())
-    ne
+    new_g.ndata['feat'] = g.ndata['feat']
+    
+    src, dst = g.all_edges(order="eid")
+    src = dgl.backend.zerocopy_to_numpy(src)
+    dst = dgl.backend.zerocopy_to_numpy(dst)
+    non_self_edges_idx = src != dst
+    nodes = np.arange(g.number_of_nodes())
+    new_g.add_edges(src[non_self_edges_idx], dst[non_self_edges_idx])
+    new_g.add_edges(nodes, nodes)
+    
+    # This new edata is not used since this function gets called only for GCN, GAT
+    # However, we need this for the generic requirement of ndata and edata
+    new_g.ed
