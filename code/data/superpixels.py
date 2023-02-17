@@ -260,4 +260,16 @@ class SuperPixDataset(torch.utils.data.Dataset):
         with open(data_dir+name+'.pkl',"rb") as f:
             f = pickle.load(f)
             self.train = f[0]
-            self.val = f
+            self.val = f[1]
+            self.test = f[2]
+        print('train, test, val sizes :',len(self.train),len(self.test),len(self.val))
+        print("[I] Finished loading.")
+        print("[I] Data load time: {:.4f}s".format(time.time()-start))
+
+
+    # form a mini batch from a given list of samples = [(graph, label) pairs]
+    def collate(self, samples):
+        # The input samples is a list of pairs (graph, label).
+        graphs, labels = map(list, zip(*samples))
+        labels = torch.tensor(np.array(labels))
+        #tab_sizes_n = [ g
