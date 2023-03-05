@@ -272,4 +272,11 @@ class SuperPixDataset(torch.utils.data.Dataset):
         # The input samples is a list of pairs (graph, label).
         graphs, labels = map(list, zip(*samples))
         labels = torch.tensor(np.array(labels))
-        #tab_sizes_n = [ g
+        #tab_sizes_n = [ graphs[i].number_of_nodes() for i in range(len(graphs))]
+        #tab_snorm_n = [ torch.FloatTensor(size,1).fill_(1./float(size)) for size in tab_sizes_n ]
+        #snorm_n = torch.cat(tab_snorm_n).sqrt()  
+        #tab_sizes_e = [ graphs[i].number_of_edges() for i in range(len(graphs))]
+        #tab_snorm_e = [ torch.FloatTensor(size,1).fill_(1./float(size)) for size in tab_sizes_e ]
+        #snorm_e = torch.cat(tab_snorm_e).sqrt()
+        for idx, graph in enumerate(graphs):
+            graphs[idx
