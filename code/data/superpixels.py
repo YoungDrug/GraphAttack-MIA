@@ -291,4 +291,15 @@ class SuperPixDataset(torch.utils.data.Dataset):
         # The input samples is a list of pairs (graph, label).
         graphs, labels = map(list, zip(*samples))
         labels = torch.tensor(np.array(labels))
-        #tab_sizes_n
+        #tab_sizes_n = [ graphs[i].number_of_nodes() for i in range(len(graphs))]
+        #tab_snorm_n = [ torch.FloatTensor(size,1).fill_(1./float(size)) for size in tab_sizes_n ]
+        #snorm_n = tab_snorm_n[0][0].sqrt()  
+        
+        #batched_graph = dgl.batch(graphs)
+    
+        g = graphs[0]
+        adj = self._sym_normalize_adj(g.adjacency_matrix().to_dense())        
+        """
+            Adapted from https://github.com/leichen2018/Ring-GNN/
+            Assigning node and edge feats::
+            we have the adjacency matrix in R
