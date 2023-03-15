@@ -279,4 +279,16 @@ class SuperPixDataset(torch.utils.data.Dataset):
         #tab_snorm_e = [ torch.FloatTensor(size,1).fill_(1./float(size)) for size in tab_sizes_e ]
         #snorm_e = torch.cat(tab_snorm_e).sqrt()
         for idx, graph in enumerate(graphs):
-            graphs[idx
+            graphs[idx].ndata['feat'] = graph.ndata['feat'].float()
+            graphs[idx].edata['feat'] = graph.edata['feat'].float()
+        batched_graph = dgl.batch(graphs)
+        
+        return batched_graph, labels
+    
+    
+    # prepare dense tensors for GNNs using them; such as RingGNN, 3WLGNN
+    def collate_dense_gnn(self, samples):
+        # The input samples is a list of pairs (graph, label).
+        graphs, labels = map(list, zip(*samples))
+        labels = torch.tensor(np.array(labels))
+        #tab_sizes_n
