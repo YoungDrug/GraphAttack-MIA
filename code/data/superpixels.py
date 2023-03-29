@@ -325,4 +325,15 @@ class SuperPixDataset(torch.utils.data.Dataset):
     
     def _sym_normalize_adj(self, adj):
         deg = torch.sum(adj, dim = 0)#.squeeze()
-        deg_inv = torch.where(deg>0, 1./torch.sqr
+        deg_inv = torch.where(deg>0, 1./torch.sqrt(deg), torch.zeros(deg.size()))
+        deg_inv = torch.diag(deg_inv)
+        return torch.mm(deg_inv, torch.mm(adj, deg_inv))
+
+    def _add_self_loops(self):
+        
+        # function for adding self loops
+        # this function will be called only if self_loop flag is True
+            
+        self.train.graph_lists = [self_loop(g) for g in self.train.graph_lists]
+        self.val.graph_lists = [self_loop(g) for g in self.val.graph_lists]
+        self.test.graph_list
