@@ -313,4 +313,16 @@ class SuperPixDataset(torch.utils.data.Dataset):
         in_dim = g.ndata['feat'].shape[1]
         
         # use node feats to prepare adj
-        adj_no
+        adj_node_feat = torch.stack([zero_adj for j in range(in_dim)])
+        adj_node_feat = torch.cat([adj.unsqueeze(0), adj_node_feat], dim=0)
+        
+        for node, node_feat in enumerate(g.ndata['feat']):
+            adj_node_feat[1:, node, node] = node_feat
+
+        x_node_feat = adj_node_feat.unsqueeze(0)
+        
+        return x_node_feat, labels
+    
+    def _sym_normalize_adj(self, adj):
+        deg = torch.sum(adj, dim = 0)#.squeeze()
+        deg_inv = torch.where(deg>0, 1./torch.sqr
