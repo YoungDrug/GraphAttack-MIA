@@ -65,4 +65,18 @@ class GCNLayer(nn.Module):
             h = self.conv(g, feature)
         
         if self.batch_norm:
-            h = self.batchnorm_h(h) # batch normalizati
+            h = self.batchnorm_h(h) # batch normalization  
+       
+        if self.activation:
+            h = self.activation(h)
+        
+        if self.residual:
+            h = h_in + h # residual connection
+            
+        h = self.dropout(h)
+        return h
+    
+    def __repr__(self):
+        return '{}(in_channels={}, out_channels={}, residual={})'.format(self.__class__.__name__,
+                                             self.in_channels,
+                                             self.out_channels, self.residual)
