@@ -50,4 +50,19 @@ class GCNLayer(nn.Module):
         elif dgl.__version__ < "0.5":
             self.conv = GraphConv(in_dim, out_dim)
         else:
-            self.conv = GraphConv(i
+            self.conv = GraphConv(in_dim, out_dim, allow_zero_in_degree=True)
+
+        
+    def forward(self, g, feature):
+        h_in = feature   # to be used for residual connection
+
+        if self.dgl_builtin == False:
+            g.ndata['h'] = feature
+            g.update_all(msg, reduce)
+            g.apply_nodes(func=self.apply_mod)
+            h = g.ndata['h'] # result of graph convolution
+        else:
+            h = self.conv(g, feature)
+        
+        if self.batch_norm:
+            h = self.batchnorm_h(h) # batch normalizati
