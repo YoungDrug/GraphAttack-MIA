@@ -36,4 +36,18 @@ class GCNLayer(nn.Module):
         self.in_channels = in_dim
         self.out_channels = out_dim
         self.batch_norm = batch_norm
-        self.
+        self.residual = residual
+        self.dgl_builtin = dgl_builtin
+        
+        if in_dim != out_dim:
+            self.residual = False
+        
+        self.batchnorm_h = nn.BatchNorm1d(out_dim)
+        self.activation = activation
+        self.dropout = nn.Dropout(dropout)
+        if self.dgl_builtin == False:
+            self.apply_mod = NodeApplyModule(in_dim, out_dim)
+        elif dgl.__version__ < "0.5":
+            self.conv = GraphConv(in_dim, out_dim)
+        else:
+            self.conv = GraphConv(i
