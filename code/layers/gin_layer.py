@@ -65,3 +65,80 @@ class GINLayer(nn.Module):
             self.register_buffer('eps', torch.FloatTensor([init_eps]))
             
         self.bn_node_h = nn.BatchNorm1d(out_dim)
+
+    def forward(self, g, h):
+        h_in = h # for residual connection
+        
+        g = g.local_var()
+        g.ndata['h'] = h
+        g.update_all(fn.copy_u('h', 'm'), self._reducer('m', 'neigh'))
+        h = (1 + self.eps) * h + g.ndata['neigh']
+        if self.apply_func is not None:
+            h = self.apply_func(h)
+
+        if self.batch_norm:
+            h = self.bn_node_h(h) # batch normalization  
+       
+        h = F.relu(h) # non-linear activation
+        
+        if self.residual:
+            h = h_in + h # residual connection
+        
+        h = F.dropout(h, self.dropout, training=self.training)
+        
+        return h
+    
+    
+class ApplyNodeFunc(nn.Module):
+    """
+        This class is used in class GINNet
+        Update the node feature hv with MLP
+    """
+    def __init__(self, mlp):
+        super().__init__()
+        self.mlp = mlp
+
+    def forward(self, h):
+        h = self.mlp(h)
+        return h
+
+
+class MLP(nn.Module):
+    """MLP with linear output"""
+    def __init__(self, num_layers, input_dim, hidden_dim, output_dim):
+
+        super().__init__()
+        self.linear_or_not = True  # default is linear model
+        self.num_layers = num_layers
+        self.output_dim = output_dim
+        self.input_dim = input_dim
+
+        if num_layers < 1:
+            raise ValueError("number of layers should be positive!")
+        elif num_layers == 1:
+            # Linear model
+            self.linear = nn.Linear(input_dim, output_dim)
+        else:
+            # Multi-layer model
+            self.linear_or_not = False
+            self.linears = torch.nn.ModuleList()
+            self.batch_norms = torch.nn.ModuleList()
+
+            self.linears.append(nn.Linear(input_dim, hidden_dim))
+            for layer in range(num_layers - 2):
+                self.linears.append(nn.Linear(hidden_dim, hidden_dim))
+            self.linears.append(nn.Linear(hidden_dim, output_dim))
+
+            for layer in range(num_layers - 1):
+                self.batch_norms.append(nn.BatchNorm1d((hidden_dim)))
+
+    def forward(self, x):
+        if self.linear_or_not:
+            # If linear model
+            return self.linear(x)
+        else:
+            # If MLP
+            h = x
+            for i in range(self.num_layers - 1):
+                h = F.relu(self.batch_norms[i](self.linears[i](h)))
+            return self.linears[-1](h)
