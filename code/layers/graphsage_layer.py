@@ -24,4 +24,15 @@ class GraphSageLayer(nn.Module):
         self.residual = residual
         self.dgl_builtin = dgl_builtin
         
-        if in_feats != out
+        if in_feats != out_feats:
+            self.residual = False
+        
+        self.dropout = nn.Dropout(p=dropout)
+
+        if dgl_builtin == False:
+            self.nodeapply = NodeApply(in_feats, out_feats, activation, dropout,
+                                   bias=bias)
+            if aggregator_type == "maxpool":
+                self.aggregator = MaxPoolAggregator(in_feats, in_feats,
+                                                    activation, bias)
+            elif aggregator_type =
