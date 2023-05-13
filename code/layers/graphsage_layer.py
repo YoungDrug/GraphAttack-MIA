@@ -35,4 +35,19 @@ class GraphSageLayer(nn.Module):
             if aggregator_type == "maxpool":
                 self.aggregator = MaxPoolAggregator(in_feats, in_feats,
                                                     activation, bias)
-            elif aggregator_type =
+            elif aggregator_type == "lstm":
+                self.aggregator = LSTMAggregator(in_feats, in_feats)
+            else:
+                self.aggregator = MeanAggregator()
+        else:
+            self.sageconv = SAGEConv(in_feats, out_feats, aggregator_type,
+                    dropout, activation=activation)
+        
+        if self.batch_norm:
+            self.batchnorm_h = nn.BatchNorm1d(out_feats)
+
+    def forward(self, g, h):
+        h_in = h              # for residual connection
+        
+        if self.dgl_builtin == False:
+            h = 
