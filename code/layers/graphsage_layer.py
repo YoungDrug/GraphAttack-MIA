@@ -74,4 +74,26 @@ class GraphSageLayer(nn.Module):
         
         if self.residual:
             h = h_in + h       # residual connection
-      
+        
+        return h
+    
+    def __repr__(self):
+        return '{}(in_channels={}, out_channels={}, aggregator={}, residual={})'.format(self.__class__.__name__,
+                                              self.in_channels,
+                                              self.out_channels, self.aggregator_type, self.residual)
+
+    
+    
+"""
+    Aggregators for GraphSage
+"""
+class Aggregator(nn.Module):
+    """
+    Base Aggregator class. 
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, node):
+    
