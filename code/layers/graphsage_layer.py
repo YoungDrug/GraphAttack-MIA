@@ -120,3 +120,20 @@ class MeanAggregator(Aggregator):
 
 class MaxPoolAggregator(Aggregator):
     """
+    Maxpooling aggregator for graphsage
+    """
+
+    def __init__(self, in_feats, out_feats, activation, bias):
+        super().__init__()
+        self.linear = nn.Linear(in_feats, out_feats, bias=bias)
+        self.activation = activation
+
+    def aggre(self, neighbour):
+        neighbour = self.linear(neighbour)
+        if self.activation:
+            neighbour = self.activation(neighbour)
+        maxpool_neighbour = torch.max(neighbour, dim=1)[0]
+        return maxpool_neighbour
+
+
+class LSTMAggregat
