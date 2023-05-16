@@ -96,4 +96,27 @@ class Aggregator(nn.Module):
         super().__init__()
 
     def forward(self, node):
-    
+        neighbour = node.mailbox['m']
+        c = self.aggre(neighbour)
+        return {"c": c}
+
+    def aggre(self, neighbour):
+        # N x F
+        raise NotImplementedError
+
+
+class MeanAggregator(Aggregator):
+    """
+    Mean Aggregator for graphsage
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def aggre(self, neighbour):
+        mean_neighbour = torch.mean(neighbour, dim=1)
+        return mean_neighbour
+
+
+class MaxPoolAggregator(Aggregator):
+    """
