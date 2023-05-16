@@ -136,4 +136,20 @@ class MaxPoolAggregator(Aggregator):
         return maxpool_neighbour
 
 
-class LSTMAggregat
+class LSTMAggregator(Aggregator):
+    """
+    LSTM aggregator for graphsage
+    """
+
+    def __init__(self, in_feats, hidden_feats):
+        super().__init__()
+        self.lstm = nn.LSTM(in_feats, hidden_feats, batch_first=True)
+        self.hidden_dim = hidden_feats
+        self.hidden = self.init_hidden()
+
+        nn.init.xavier_uniform_(self.lstm.weight,
+                                gain=nn.init.calculate_gain('relu'))
+
+    def init_hidden(self):
+        """
+        Defa
