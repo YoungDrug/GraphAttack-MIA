@@ -152,4 +152,20 @@ class LSTMAggregator(Aggregator):
 
     def init_hidden(self):
         """
-        Defa
+        Defaulted to initialite all zero
+        """
+        return (torch.zeros(1, 1, self.hidden_dim),
+                torch.zeros(1, 1, self.hidden_dim))
+
+    def aggre(self, neighbours):
+        """
+        aggregation function
+        """
+        # N X F
+        rand_order = torch.randperm(neighbours.size()[1])
+        neighbours = neighbours[:, rand_order, :]
+
+        (lstm_out, self.hidden) = self.lstm(neighbours.view(neighbours.size()[0], neighbours.size()[1], -1))
+        return lstm_out[:, -1, :]
+
+    def forward(self, 
