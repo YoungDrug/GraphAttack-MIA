@@ -168,4 +168,22 @@ class LSTMAggregator(Aggregator):
         (lstm_out, self.hidden) = self.lstm(neighbours.view(neighbours.size()[0], neighbours.size()[1], -1))
         return lstm_out[:, -1, :]
 
-    def forward(self, 
+    def forward(self, node):
+        neighbour = node.mailbox['m']
+        c = self.aggre(neighbour)
+        return {"c": c}
+    
+    
+class NodeApply(nn.Module):
+    """
+    Works -> the node_apply function in DGL paradigm
+    """
+
+    def __init__(self, in_feats, out_feats, activation, dropout, bias=True):
+        super().__init__()
+        self.dropout = nn.Dropout(p=dropout)
+        self.linear = nn.Linear(in_feats * 2, out_feats, bias)
+        self.activation = activation
+
+    def concat(self, h, aggre_result):
+        bundle = t
