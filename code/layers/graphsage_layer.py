@@ -186,4 +186,22 @@ class NodeApply(nn.Module):
         self.activation = activation
 
     def concat(self, h, aggre_result):
-        bundle = t
+        bundle = torch.cat((h, aggre_result), 1)
+        bundle = self.linear(bundle)
+        return bundle
+
+    def forward(self, node):
+        h = node.data['h']
+        c = node.data['c']
+        bundle = self.concat(h, c)
+        bundle = F.normalize(bundle, p=2, dim=1)
+        if self.activation:
+            bundle = self.activation(bundle)
+        return {"h": bundle}
+    
+    
+##############################################################
+#
+# Additional layers for edge feature/representation analysis
+#
+##############################
