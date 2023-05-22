@@ -221,3 +221,19 @@ class GraphSageLayerEdgeFeat(nn.Module):
         
         if in_feats != out_feats:
             self.residual = False
+        
+        self.dropout = nn.Dropout(p=dropout)
+        
+        self.activation = activation
+        
+        self.A = nn.Linear(in_feats, out_feats, bias=bias)
+        self.B = nn.Linear(in_feats, out_feats, bias=bias)
+        
+        self.nodeapply = NodeApply(in_feats, out_feats, activation, dropout, bias=bias)
+        
+        if self.batch_norm:
+            self.batchnorm_h = nn.BatchNorm1d(out_feats)
+            
+    def message_func(self, edges):
+        Ah_j = edges.src['Ah']    
+        e_ij = e
