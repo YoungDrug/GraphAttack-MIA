@@ -288,4 +288,20 @@ class GraphSageLayerEdgeFeat(nn.Module):
 class GraphSageLayerEdgeReprFeat(nn.Module):
 
     def __init__(self, in_feats, out_feats, activation, dropout,
-    
+                 aggregator_type, batch_norm, residual=False, 
+                 bias=True, dgl_builtin=False):
+        super().__init__()
+        self.in_channels = in_feats
+        self.out_channels = out_feats
+        self.batch_norm = batch_norm
+        self.residual = residual
+        
+        if in_feats != out_feats:
+            self.residual = False
+        
+        self.dropout = nn.Dropout(p=dropout)
+        
+        self.activation = activation
+        
+        self.A = nn.Linear(in_feats, out_feats, bias=bias)
+        
