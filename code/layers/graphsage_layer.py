@@ -270,4 +270,22 @@ class GraphSageLayerEdgeFeat(nn.Module):
             h = self.batchnorm_h(h)
         
         if self.residual:
-            
+            h = h_in + h       # residual connection
+        
+        return h
+    
+    def __repr__(self):
+        return '{}(in_channels={}, out_channels={}, residual={})'.format(
+            self.__class__.__name__,
+            self.in_channels,
+            self.out_channels,
+            self.residual)
+
+
+##############################################################
+
+
+class GraphSageLayerEdgeReprFeat(nn.Module):
+
+    def __init__(self, in_feats, out_feats, activation, dropout,
+    
