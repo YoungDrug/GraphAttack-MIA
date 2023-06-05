@@ -350,4 +350,20 @@ class GraphSageLayerEdgeReprFeat(nn.Module):
         e = g.edata['e']
         
         if self.activation:
-            e = 
+            e = self.activation(e) # non-linear activation
+        
+        if self.batch_norm:
+            h = self.batchnorm_h(h)
+            e = self.batchnorm_e(e)
+        
+        if self.residual:
+            h = h_in + h # residual connection
+            e = e_in + e # residual connection
+        
+        return h, e
+    
+    def __repr__(self):
+        return '{}(in_channels={}, out_channels={}, residual={})'.format(
+            self.__class__.__name__,
+            self.in_channels,
+            self.out_
