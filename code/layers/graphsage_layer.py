@@ -366,4 +366,5 @@ class GraphSageLayerEdgeReprFeat(nn.Module):
         return '{}(in_channels={}, out_channels={}, residual={})'.format(
             self.__class__.__name__,
             self.in_channels,
-            self.out_
+            self.out_channels, 
+            self.residual)
