@@ -304,4 +304,15 @@ class GraphSageLayerEdgeReprFeat(nn.Module):
         self.activation = activation
         
         self.A = nn.Linear(in_feats, out_feats, bias=bias)
+        self.B = nn.Linear(in_feats, out_feats, bias=bias)
+        self.C = nn.Linear(in_feats, out_feats, bias=bias)
         
+        self.nodeapply = NodeApply(in_feats, out_feats, activation, dropout, bias=bias)
+        
+        if self.batch_norm:
+            self.batchnorm_h = nn.BatchNorm1d(out_feats)
+            self.batchnorm_e = nn.BatchNorm1d(out_feats)
+            
+    def message_func(self, edges):
+        Ah_j = edges.src['Ah']    
+        e_ij = edges.data['Ce'] + edges.src['Bh'] + e
