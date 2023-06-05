@@ -331,4 +331,23 @@ class GraphSageLayerEdgeReprFeat(nn.Module):
             Ah_j = self.activation(Ah_j)
            
         c = torch.max(Ah_j, dim=1)[0]
-    
+        return {'c' : c}
+
+    def forward(self, g, h, e):
+        h_in = h              # for residual connection
+        e_in = e
+        h = self.dropout(h)
+        
+        g.ndata['h']  = h
+        g.ndata['Ah'] = self.A(h)
+        g.ndata['Bh'] = self.B(h)
+        g.edata['e']  = e 
+        g.edata['Ce'] = self.C(e) 
+        g.update_all(self.message_func, 
+                     self.reduce_func,
+                     self.nodeapply)
+        h = g.ndata['h']
+        e = g.edata['e']
+        
+        if self.activation:
+            e = 
