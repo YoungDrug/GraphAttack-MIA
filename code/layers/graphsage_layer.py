@@ -315,4 +315,20 @@ class GraphSageLayerEdgeReprFeat(nn.Module):
             
     def message_func(self, edges):
         Ah_j = edges.src['Ah']    
-        e_ij = edges.data['Ce'] + edges.src['Bh'] + e
+        e_ij = edges.data['Ce'] + edges.src['Bh'] + edges.dst['Bh'] # e_ij = Ce_ij + Bhi + Bhj
+        edges.data['e'] = e_ij
+        return {'Ah_j' : Ah_j, 'e_ij' : e_ij}
+
+    def reduce_func(self, nodes):
+        # Anisotropic MaxPool aggregation
+        
+        Ah_j = nodes.mailbox['Ah_j']
+        e = nodes.mailbox['e_ij']
+        sigma_ij = torch.sigmoid(e) # sigma_ij = sigmoid(e_ij)
+        
+        Ah_j = sigma_ij * Ah_j
+        if self.activation:
+            Ah_j = self.activation(Ah_j)
+           
+        c = torch.max(Ah_j, dim=1)[0]
+    
