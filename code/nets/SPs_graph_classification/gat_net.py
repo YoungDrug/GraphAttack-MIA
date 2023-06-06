@@ -27,4 +27,12 @@ class GATNet(nn.Module):
         self.batch_norm = net_params['batch_norm']
         self.residual = net_params['residual']
         self.dropout = dropout
-   
+        
+        self.embedding_h = nn.Linear(in_dim, hidden_dim * num_heads)
+        
+        self.in_feat_dropout = nn.Dropout(in_feat_dropout)
+        
+        self.layers = nn.ModuleList([GATLayer(hidden_dim * num_heads, hidden_dim, num_heads,
+                                              dropout, self.batch_norm, self.residual) for _ in range(n_layers-1)])
+        self.layers.append(GATLayer(hidden_dim * num_heads, out_dim, 1, dropout, self.batch_norm, self.residual))
+        self.MLP_layer = MLPReadout(out_di
