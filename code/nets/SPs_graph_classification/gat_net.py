@@ -35,4 +35,20 @@ class GATNet(nn.Module):
         self.layers = nn.ModuleList([GATLayer(hidden_dim * num_heads, hidden_dim, num_heads,
                                               dropout, self.batch_norm, self.residual) for _ in range(n_layers-1)])
         self.layers.append(GATLayer(hidden_dim * num_heads, out_dim, 1, dropout, self.batch_norm, self.residual))
-        self.MLP_layer = MLPReadout(out_di
+        self.MLP_layer = MLPReadout(out_dim, n_classes)
+        
+    def forward(self, g, h, e):
+        h = self.embedding_h(h)
+        h = self.in_feat_dropout(h)
+        for conv in self.layers:
+            h = conv(g, h)
+        g.ndata['h'] = h
+        
+        if self.readout == "sum":
+            hg = dgl.sum_nodes(g, 'h')
+        elif self.readout == "max":
+            hg = dgl.max_nodes(g, 'h')
+        elif self.readout == "mean":
+            hg = dgl.mean_nodes(g, 'h')
+        else:
+            hg = dgl.mean_nodes(g, 'h')  # default readout is me
