@@ -22,4 +22,13 @@ class GCNNet(nn.Module):
         in_feat_dropout = net_params['in_feat_dropout']
         dropout = net_params['dropout']
         n_layers = net_params['L']
-  
+        self.readout = net_params['readout']
+        self.batch_norm = net_params['batch_norm']
+        self.residual = net_params['residual']
+        
+        self.embedding_h = nn.Linear(in_dim, hidden_dim)
+        self.in_feat_dropout = nn.Dropout(in_feat_dropout)
+        
+        self.layers = nn.ModuleList([GCNLayer(hidden_dim, hidden_dim, F.relu, dropout,
+                                              self.batch_norm, self.residual) for _ in range(n_layers-1)])
+        self.layers.app
