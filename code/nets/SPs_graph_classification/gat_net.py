@@ -16,3 +16,15 @@ class GATNet(nn.Module):
     def __init__(self, net_params):
         super().__init__()
         in_dim = net_params['in_dim']
+        hidden_dim = net_params['hidden_dim']
+        out_dim = net_params['out_dim']
+        n_classes = net_params['n_classes']
+        num_heads = net_params['n_heads']
+        in_feat_dropout = net_params['in_feat_dropout']
+        dropout = net_params['dropout']
+        n_layers = net_params['L']
+        self.readout = net_params['readout']
+        self.batch_norm = net_params['batch_norm']
+        self.residual = net_params['residual']
+        self.dropout = dropout
+   
