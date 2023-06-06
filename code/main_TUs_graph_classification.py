@@ -509,3 +509,51 @@ def main():
         net_params['num_pool'] = int(args.num_pool)
     if args.gnn_per_block is not None:
         net_params['gnn_per_block'] = int(args.gnn_per_block)
+    if args.embedding_dim is not None:
+        net_params['embedding_dim'] = int(args.embedding_dim)
+    if args.pool_ratio is not None:
+        net_params['pool_ratio'] = float(args.pool_ratio)
+    if args.linkpred is not None:
+        net_params['linkpred'] = True if args.linkpred == 'True' else False
+    if args.cat is not None:
+        net_params['cat'] = True if args.cat == 'True' else False
+    if args.self_loop is not None:
+        net_params['self_loop'] = True if args.self_loop == 'True' else False
+
+    # TUs
+    net_params['in_dim'] = dataset.all.graph_lists[0].ndata['feat'][0].shape[0]
+    num_classes = len(np.unique(dataset.all.graph_labels))
+    net_params['n_classes'] = num_classes
+
+    if MODEL_NAME == 'DiffPool':
+        # calculate assignment dimension: pool_ratio * largest graph's maximum
+        # number of nodes  in the dataset
+        num_nodes = [dataset.all[i][0].number_of_nodes() for i in range(len(dataset.all))]
+        max_num_node = max(num_nodes)
+        net_params['assign_dim'] = int(max_num_node * net_params['pool_ratio']) * net_params['batch_size']
+
+    if MODEL_NAME == 'RingGNN':
+        num_nodes = [dataset.all[i][0].number_of_nodes() for i in range(len(dataset.all))]
+        net_params['avg_node_num'] = int(np.ceil(np.mean(num_nodes)))
+
+    root_log_dir = out_dir + 'logs/' + MODEL_NAME + "_" + DATASET_NAME + "_GPU" + str(
+        config['gpu']['id']) + "_" + time.strftime('%Hh%Mm%Ss_on_%b_%d_%Y')
+    root_ckpt_dir = out_dir + 'checkpoints/' + MODEL_NAME + "_" + DATASET_NAME + "_GPU" + str(
+        config['gpu']['id']) + "_" + time.strftime('%Hh%Mm%Ss_on_%b_%d_%Y')
+    write_file_name = out_dir + 'results/result_' + MODEL_NAME + "_" + DATASET_NAME + "_GPU" + str(
+        config['gpu']['id']) + "_" + time.strftime('%Hh%Mm%Ss_on_%b_%d_%Y')
+    write_config_file = out_dir + 'configs/config_' + MODEL_NAME + "_" + DATASET_NAME + "_GPU" + str(
+        config['gpu']['id']) + "_" + time.strftime('%Hh%Mm%Ss_on_%b_%d_%Y')
+    dirs = root_log_dir, root_ckpt_dir, write_file_name, write_config_file
+
+    if not os.path.exists(out_dir + 'results'):
+        os.makedirs(out_dir + 'results')
+
+    if not os.path.exists(out_dir + 'configs'):
+        os.makedirs(out_dir + 'configs')
+
+    net_params['total_param'] = view_model_param(MODEL_NAME, net_params)
+    train_val_pipeline(MODEL_NAME, DATASET_NAME, params, net_params, dirs)
+
+
+main()
