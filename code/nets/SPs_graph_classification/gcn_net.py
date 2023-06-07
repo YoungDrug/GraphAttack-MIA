@@ -31,4 +31,17 @@ class GCNNet(nn.Module):
         
         self.layers = nn.ModuleList([GCNLayer(hidden_dim, hidden_dim, F.relu, dropout,
                                               self.batch_norm, self.residual) for _ in range(n_layers-1)])
-        self.layers.app
+        self.layers.append(GCNLayer(hidden_dim, out_dim, F.relu, dropout, self.batch_norm, self.residual))
+        self.MLP_layer = MLPReadout(out_dim, n_classes)        
+
+    def forward(self, g, h, e):
+        h = self.embedding_h(h)
+        h = self.in_feat_dropout(h)
+        for conv in self.layers:
+            h = conv(g, h)
+        g.ndata['h'] = h
+        
+        if self.readout == "sum":
+            hg = dgl.sum_nodes(g, 'h')
+        elif self.readout == "max":
+            hg
