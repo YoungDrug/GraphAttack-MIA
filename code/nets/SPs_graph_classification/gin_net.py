@@ -31,4 +31,14 @@ class GINNet(nn.Module):
         
         # List of MLPs
         self.ginlayers = torch.nn.ModuleList()
-    
+        
+        self.embedding_h = nn.Linear(in_dim, hidden_dim)
+        
+        for layer in range(self.n_layers):
+            mlp = MLP(n_mlp_layers, hidden_dim, hidden_dim, hidden_dim)
+            
+            self.ginlayers.append(GINLayer(ApplyNodeFunc(mlp), neighbor_aggr_type,
+                                           dropout, batch_norm, residual, 0, learn_eps))
+
+        # Linear function for graph poolings (readout) of output of each layer
+        # which maps the output of different layers in
