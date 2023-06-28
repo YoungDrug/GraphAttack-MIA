@@ -41,4 +41,19 @@ class GINNet(nn.Module):
                                            dropout, batch_norm, residual, 0, learn_eps))
 
         # Linear function for graph poolings (readout) of output of each layer
-        # which maps the output of different layers in
+        # which maps the output of different layers into a prediction score
+        self.linears_prediction = torch.nn.ModuleList()
+
+        for layer in range(self.n_layers+1):
+            self.linears_prediction.append(nn.Linear(hidden_dim, n_classes))
+        
+        if readout == 'sum':
+            self.pool = SumPooling()
+        elif readout == 'mean':
+            self.pool = AvgPooling()
+        elif readout == 'max':
+            self.pool = MaxPooling()
+        else:
+            raise NotImplementedError
+        
+    d
