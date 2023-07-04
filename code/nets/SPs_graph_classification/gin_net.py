@@ -56,4 +56,20 @@ class GINNet(nn.Module):
         else:
             raise NotImplementedError
         
-    d
+    def forward(self, g, h, e):
+        
+        h = self.embedding_h(h)
+        
+        # list of hidden representation at each layer (including input)
+        hidden_rep = [h]
+
+        for i in range(self.n_layers):
+            h = self.ginlayers[i](g, h)
+            hidden_rep.append(h)
+
+        score_over_layer = 0
+
+        # perform pooling over all nodes in each graph in every layer
+        for i, h in enumerate(hidden_rep):
+            pooled_h = self.pool(g, h)
+            score_over_layer += self.linears_predicti
