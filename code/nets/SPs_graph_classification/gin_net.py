@@ -72,4 +72,11 @@ class GINNet(nn.Module):
         # perform pooling over all nodes in each graph in every layer
         for i, h in enumerate(hidden_rep):
             pooled_h = self.pool(g, h)
-            score_over_layer += self.linears_predicti
+            score_over_layer += self.linears_prediction[i](pooled_h)
+
+        return score_over_layer
+        
+    def loss(self, pred, label):
+        criterion = nn.CrossEntropyLoss()
+        loss = criterion(pred, label)
+        return loss
