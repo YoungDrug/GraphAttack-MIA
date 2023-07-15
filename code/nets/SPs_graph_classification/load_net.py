@@ -48,4 +48,10 @@ def gnn_model(MODEL_NAME, net_params):
         'GAT': GAT,
         'GraphSage': GraphSage,
         'GIN': GIN,
-        'Mo
+        'MoNet': MoNet,
+        'MLP': MLP,
+        'RingGNN': RingGNN,
+        '3WLGNN': ThreeWLGNN
+    }
+        
+    return models[MODEL_NAME](net_params)
