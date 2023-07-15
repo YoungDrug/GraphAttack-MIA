@@ -40,4 +40,12 @@ class MoNet(nn.Module):
         self.pseudo_proj = nn.ModuleList()
 
         # Hidden layer
-        for 
+        for _ in range(n_layers-1):
+            self.layers.append(GMMLayer(hidden_dim, hidden_dim, dim, kernel, aggr_type,
+                                        dropout, batch_norm, residual))
+            self.pseudo_proj.append(nn.Sequential(nn.Linear(2, dim), nn.Tanh()))
+            
+        # Output layer
+        self.layers.append(GMMLayer(hidden_dim, out_dim, dim, kernel, aggr_type,
+                                    dropout, batch_norm, residual))
+        self.pseudo_proj.append(nn.Sequential(nn
