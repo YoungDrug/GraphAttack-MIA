@@ -48,4 +48,18 @@ class MoNet(nn.Module):
         # Output layer
         self.layers.append(GMMLayer(hidden_dim, out_dim, dim, kernel, aggr_type,
                                     dropout, batch_norm, residual))
-        self.pseudo_proj.append(nn.Sequential(nn
+        self.pseudo_proj.append(nn.Sequential(nn.Linear(2, dim), nn.Tanh()))
+        
+        self.MLP_layer = MLPReadout(out_dim, n_classes)
+
+    def forward(self, g, h, e):
+        h = self.embedding_h(h)
+        
+        # computing the 'pseudo' named tensor which depends on node degrees
+        g.ndata['deg'] = g.in_degrees()
+        g.apply_edges(self.compute_pseudo)
+        pseudo = g.edata['pseudo'].to(self.device).float()
+        
+        for i in range(len(self.layers)):
+            h = self.layers[i](g, h, self.pseudo_proj[i](pseudo))
+        g
