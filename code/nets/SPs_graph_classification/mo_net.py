@@ -25,4 +25,19 @@ class MoNet(nn.Module):
         kernel = net_params['kernel']                       # for MoNet
         dim = net_params['pseudo_dim_MoNet']                # for MoNet
         n_classes = net_params['n_classes']
-        dropout = net_para
+        dropout = net_params['dropout']
+        n_layers = net_params['L']
+        self.readout = net_params['readout']                            
+        batch_norm = net_params['batch_norm']
+        residual = net_params['residual']  
+        self.device = net_params['device']
+        
+        aggr_type = "sum"                                    # default for MoNet
+        
+        self.embedding_h = nn.Linear(in_dim, hidden_dim)
+        
+        self.layers = nn.ModuleList()
+        self.pseudo_proj = nn.ModuleList()
+
+        # Hidden layer
+        for 
