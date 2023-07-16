@@ -77,4 +77,13 @@ class MoNet(nn.Module):
         
     def compute_pseudo(self, edges):
         # compute pseudo edge features for MoNet
-        # to avoid zero
+        # to avoid zero division in case in_degree is 0, we add constant '1' in all node degrees denoting self-loop
+        srcs = 1/np.sqrt(edges.src['deg']+1)
+        dsts = 1/np.sqrt(edges.dst['deg']+1)
+        pseudo = torch.cat((srcs.unsqueeze(-1), dsts.unsqueeze(-1)), dim=1)
+        return {'pseudo': pseudo}    
+    
+    def loss(self, pred, label):
+        criterion = nn.CrossEntropyLoss()
+        loss = criterion(pred, label)
+        return loss
