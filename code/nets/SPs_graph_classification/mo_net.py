@@ -62,4 +62,19 @@ class MoNet(nn.Module):
         
         for i in range(len(self.layers)):
             h = self.layers[i](g, h, self.pseudo_proj[i](pseudo))
-        g
+        g.ndata['h'] = h
+            
+        if self.readout == "sum":
+            hg = dgl.sum_nodes(g, 'h')
+        elif self.readout == "max":
+            hg = dgl.max_nodes(g, 'h')
+        elif self.readout == "mean":
+            hg = dgl.mean_nodes(g, 'h')
+        else:
+            hg = dgl.mean_nodes(g, 'h')  # default readout is mean nodes
+
+        return self.MLP_layer(hg)
+        
+    def compute_pseudo(self, edges):
+        # compute pseudo edge features for MoNet
+        # to avoid zero
