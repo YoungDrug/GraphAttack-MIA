@@ -36,4 +36,20 @@ class RingGNNNet(nn.Module):
                                                                  radius=radius,
                                                                  k2_init=0.5/avg_node_num) for m, n in zip(self.depth[:-1], self.depth[1:])])
         
-        self.prediction = MLPRe
+        self.prediction = MLPReadout(torch.sum(torch.stack(self.depth)).item(), n_classes)
+
+    def forward(self, x):
+        """
+            CODE ADPATED FROM https://github.com/leichen2018/Ring-GNN/
+        """
+
+        # this x is the tensor with all info available => adj, node feat
+
+        x_list = [x]
+        for layer in self.equi_modulelist:    
+            x = layer(x)
+            x_list.append(x)
+        
+        # # readout
+        x_list = [torch.sum(torch.sum(x, dim=3), dim=2) for x in x_list]
+        x_list = torch.cat
