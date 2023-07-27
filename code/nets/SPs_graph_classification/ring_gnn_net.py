@@ -30,4 +30,10 @@ class RingGNNNet(nn.Module):
         self.depth = [torch.LongTensor([1+self.in_dim_node])] + [torch.LongTensor([hidden_dim])] * n_layers
             
         self.equi_modulelist = nn.ModuleList([RingGNNEquivLayer(self.device, m, n,
-                         
+                                                                 layer_norm=self.layer_norm,
+                                                                 residual=self.residual,
+                                                                 dropout=dropout,
+                                                                 radius=radius,
+                                                                 k2_init=0.5/avg_node_num) for m, n in zip(self.depth[:-1], self.depth[1:])])
+        
+        self.prediction = MLPRe
