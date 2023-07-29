@@ -52,4 +52,14 @@ class RingGNNNet(nn.Module):
         
         # # readout
         x_list = [torch.sum(torch.sum(x, dim=3), dim=2) for x in x_list]
-        x_list = torch.cat
+        x_list = torch.cat(x_list, dim=1)
+        
+        x_out = self.prediction(x_list)
+
+        return x_out
+    
+    def loss(self, pred, label):
+        criterion = nn.CrossEntropyLoss()
+        loss = criterion(pred, label)
+        return loss
+
