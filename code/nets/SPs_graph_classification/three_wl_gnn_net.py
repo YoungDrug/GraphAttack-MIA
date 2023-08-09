@@ -21,4 +21,15 @@ class ThreeWLGNNNet(nn.Module):
         super().__init__()
         self.in_dim_node = net_params['in_dim']
         depth_of_mlp = net_params['depth_of_mlp']
-        hidden_dim = net_params['hidden_dim
+        hidden_dim = net_params['hidden_dim']
+        n_classes = net_params['n_classes']
+        dropout = net_params['dropout']
+        n_layers = net_params['L']
+        self.layer_norm = net_params['layer_norm']
+        self.residual = net_params['residual']
+        self.device = net_params['device']
+        self.diag_pool_readout = True                     # if True, uses the new_suffix readout from original code
+        
+        block_features = [hidden_dim] * n_layers  # L here is the block number
+        
+        original_features_num = self.in_dim_node + 1  # Num
