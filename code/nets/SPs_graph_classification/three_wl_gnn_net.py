@@ -32,4 +32,16 @@ class ThreeWLGNNNet(nn.Module):
         
         block_features = [hidden_dim] * n_layers  # L here is the block number
         
-        original_features_num = self.in_dim_node + 1  # Num
+        original_features_num = self.in_dim_node + 1  # Number of features of the input
+
+        # sequential mlp blocks
+        last_layer_features = original_features_num
+        self.reg_blocks = nn.ModuleList()
+        for layer, next_layer_features in enumerate(block_features):
+            mlp_block = RegularBlock(depth_of_mlp, last_layer_features, next_layer_features, self.residual)
+            self.reg_blocks.append(mlp_block)
+            last_layer_features = next_layer_features
+        
+        if self.diag_pool_readout:
+            self.fc_layers = nn.ModuleList()
+            for output_feat
