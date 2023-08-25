@@ -53,4 +53,20 @@ class ThreeWLGNNNet(nn.Module):
 
     def forward(self, x):                
         if self.diag_pool_readout:
-            sco
+            scores = torch.tensor(0, device=self.device, dtype=x.dtype)
+        else:
+            x_list = [x]
+        
+        for i, block in enumerate(self.reg_blocks):
+
+            x = block(x)
+            if self.diag_pool_readout:
+                scores = self.fc_layers[i](diag_offdiag_maxpool(x)) + scores
+            else:
+                x_list.append(x)
+        
+        if self.diag_pool_readout:
+            return scores
+        else:
+            # readout like RingGNN
+            x_list = [torch.sum(torch.sum(x, dim=3), dim
