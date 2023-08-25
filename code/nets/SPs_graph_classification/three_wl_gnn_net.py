@@ -44,4 +44,13 @@ class ThreeWLGNNNet(nn.Module):
         
         if self.diag_pool_readout:
             self.fc_layers = nn.ModuleList()
-            for output_feat
+            for output_features in block_features:
+                # each block's output will be pooled (thus have 2*output_features), and pass through a fully connected
+                fc = FullyConnected(2*output_features, n_classes, activation_fn=None)
+                self.fc_layers.append(fc)
+        else:
+            self.mlp_prediction = MLPReadout(sum(block_features)+original_features_num, n_classes)
+
+    def forward(self, x):                
+        if self.diag_pool_readout:
+            sco
