@@ -29,4 +29,17 @@ class GatedGCNNet(nn.Module):
         self.embedding_h = nn.Linear(in_dim, hidden_dim)
         self.embedding_e = nn.Linear(in_dim, hidden_dim)
         self.layers = nn.ModuleList([ GatedGCNLayer(hidden_dim, hidden_dim, dropout,
-                                                       self.batch_n
+                                                       self.batch_norm, self.residual) for _ in range(n_layers-1) ]) 
+        self.layers.append(GatedGCNLayer(hidden_dim, out_dim, dropout, self.batch_norm, self.residual))
+        self.MLP_layer = MLPReadout(out_dim, n_classes)
+        
+    def forward(self, g, h, e):
+        h = self.embedding_h(h)
+        e = self.embedding_e(e)
+        
+        # convnets
+        for conv in self.layers:
+            h, e = conv(g, h, e)
+        g.ndata['h'] = h
+        
+        if self.readout ==
