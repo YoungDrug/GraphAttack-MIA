@@ -36,3 +36,26 @@ class GCNNet(nn.Module):
         self.MLP_layer = MLPReadout(out_dim, n_classes)        
 
     def forward(self, g, h, e):
+        h = self.embedding_h(h)
+        h = self.in_feat_dropout(h)
+        for conv in self.layers:
+            h = conv(g, h)
+        g.ndata['h'] = h
+        
+        if self.readout == "sum":
+            hg = dgl.sum_nodes(g, 'h')
+        elif self.readout == "max":
+            hg = dgl.max_nodes(g, 'h')
+        elif self.readout == "mean":
+            hg = dgl.mean_nodes(g, 'h')
+        else:
+            hg = dgl.mean_nodes(g, 'h')  # default readout is mean nodes
+            
+        return self.MLP_layer(hg)
+    
+    def loss(self, pred, label):
+        criterion = nn.CrossEntropyLoss()
+        loss = criterion(pred, label)
+        return loss
+        
+    
