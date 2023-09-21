@@ -36,4 +36,20 @@ class GraphSageNet(nn.Module):
         
         self.layers = nn.ModuleList([GraphSageLayer(hidden_dim, hidden_dim, F.relu,
                                               dropout, aggregator_type, batch_norm, residual) for _ in range(n_layers-1)])
-        self.layers.append(GraphSageLayer(hidden_dim, out_dim, F.relu, dropout, 
+        self.layers.append(GraphSageLayer(hidden_dim, out_dim, F.relu, dropout, aggregator_type, batch_norm, residual))
+        self.MLP_layer = MLPReadout(out_dim, n_classes)
+        
+    def forward(self, g, h, e):
+        h = self.embedding_h(h)
+        h = self.in_feat_dropout(h)
+        for conv in self.layers:
+            h = conv(g, h)
+        g.ndata['h'] = h
+        
+        if self.readout == "sum":
+            hg = dgl.sum_nodes(g, 'h')
+        elif self.readout == "max":
+            hg = dgl.max_nodes(g, 'h')
+        elif self.readout == "mean":
+            hg = dgl.mean_nodes(g, 'h')
+   
