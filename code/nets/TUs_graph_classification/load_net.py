@@ -51,4 +51,16 @@ def ThreeWLGNN(net_params):
 
 
 def gnn_model(MODEL_NAME, net_params):
- 
+    models = {
+        'GatedGCN': GatedGCN,
+        'GCN': GCN,
+        'GAT': GAT,
+        'GraphSage': GraphSage,
+        'GIN': GIN,
+        'MoNet': MoNet_,
+        'MLP': MLP,
+        'RingGNN': RingGNN,
+        '3WLGNN': ThreeWLGNN
+    }
+
+    return models[MODEL_NAME](net_params)
