@@ -27,4 +27,11 @@ class RingGNNNet(nn.Module):
         self.residual = net_params['residual']
         self.device = net_params['device']
         
-        self.depth = [torch.LongTensor([1+self.in_dim_node])] + [torch.
+        self.depth = [torch.LongTensor([1+self.in_dim_node])] + [torch.LongTensor([hidden_dim])] * n_layers
+            
+        self.equi_modulelist = nn.ModuleList([RingGNNEquivLayer(self.device, m, n,
+                                                                 layer_norm=self.layer_norm,
+                                                                 residual=self.residual,
+                                                                 dropout=dropout,
+                                                                 radius=radius,
+                                       
