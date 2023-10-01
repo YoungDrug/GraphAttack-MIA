@@ -37,3 +37,20 @@ class MLPNet(nn.Module):
 
     def forward(self, g, h, e):
         h = self.in_feat_dropout(h)
+        h = self.feat_mlp(h)
+        if self.gated:
+            h = torch.sigmoid(self.gates(h)) * h
+            g.ndata['h'] = h       
+            hg = dgl.sum_nodes(g, 'h')
+        else:
+            g.ndata['h'] = h
+            hg = dgl.mean_nodes(g, 'h')
+        
+        return self.readout_mlp(hg)
+
+        
+    def loss(self, pred, label):
+        criterion = nn.CrossEntropyLoss()
+        loss = criterion(pred, label)
+        return loss
+       
