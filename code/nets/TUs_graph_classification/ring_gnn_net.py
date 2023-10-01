@@ -16,4 +16,15 @@ from layers.mlp_readout_layer import MLPReadout
 class RingGNNNet(nn.Module):
     def __init__(self, net_params):
         super().__init__()
-        self.in_dim_node = n
+        self.in_dim_node = net_params['in_dim']
+        avg_node_num = net_params['avg_node_num'] 
+        radius = net_params['radius'] 
+        hidden_dim = net_params['hidden_dim']
+        n_classes = net_params['n_classes']
+        dropout = net_params['dropout']
+        n_layers = net_params['L']
+        self.layer_norm = net_params['layer_norm']
+        self.residual = net_params['residual']
+        self.device = net_params['device']
+        
+        self.depth = [torch.LongTensor([1+self.in_dim_node])] + [torch.
