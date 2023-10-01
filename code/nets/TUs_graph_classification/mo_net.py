@@ -55,3 +55,36 @@ class MoNet(nn.Module):
 
     def forward(self, g, h, e):
         h = self.embedding_h(h)
+        
+        # computing the 'pseudo' named tensor which depends on node degrees
+        g.ndata['deg'] = g.in_degrees()
+        g.apply_edges(self.compute_pseudo)
+        pseudo = g.edata['pseudo'].to(self.device).float()
+        
+        for i in range(len(self.layers)):
+            h = self.layers[i](g, h, self.pseudo_proj[i](pseudo))
+        g.ndata['h'] = h
+            
+        if self.readout == "sum":
+            hg = dgl.sum_nodes(g, 'h')
+        elif self.readout == "max":
+            hg = dgl.max_nodes(g, 'h')
+        elif self.readout == "mean":
+            hg = dgl.mean_nodes(g, 'h')
+        else:
+            hg = dgl.mean_nodes(g, 'h')  # default readout is mean nodes
+
+        return self.MLP_layer(hg)
+    
+    def compute_pseudo(self, edges):
+        # compute pseudo edge features for MoNet
+        # to avoid zero division in case in_degree is 0, we add constant '1' in all node degrees denoting self-loop
+        srcs = 1/np.sqrt(edges.src['deg']+1)
+        dsts = 1/np.sqrt(edges.dst['deg']+1)
+        pseudo = torch.cat((srcs.unsqueeze(-1), dsts.unsqueeze(-1)), dim=1)
+        return {'pseudo': pseudo}
+        
+    def loss(self, pred, label):
+        criterion = nn.CrossEntropyLoss()
+        loss = criterion(pred, label)
+        return loss
