@@ -24,4 +24,16 @@ class MLPNet(nn.Module):
             nn.ReLU(),
             nn.Dropout(dropout),
         ]
-  
+        for _ in range(n_layers-1):
+            feat_mlp_modules.append(nn.Linear(hidden_dim, hidden_dim, bias=True))
+            feat_mlp_modules.append(nn.ReLU())
+            feat_mlp_modules.append(nn.Dropout(dropout))
+        self.feat_mlp = nn.Sequential(*feat_mlp_modules)
+        
+        if self.gated:
+            self.gates = nn.Linear(hidden_dim, hidden_dim, bias=True)
+        
+        self.readout_mlp = MLPReadout(hidden_dim, n_classes)
+
+    def forward(self, g, h, e):
+        h = self.in_feat_dropout(h)
