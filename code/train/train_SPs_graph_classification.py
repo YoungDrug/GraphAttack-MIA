@@ -55,4 +55,13 @@ def evaluate_network_sparse(model, device, data_loader, epoch):
     if type(epoch) is str:
         flag = epoch.split('|')
     with torch.no_grad():
-        for it
+        for iter, (batch_graphs, batch_labels) in enumerate(data_loader):
+            batch_x = batch_graphs.ndata['feat'].to(device)
+            batch_e = batch_graphs.edata['feat'].to(device)
+            batch_labels = batch_labels.to(device)
+            batch_scores = model.forward(batch_graphs, batch_x, batch_e)
+            # Calculate Posteriors
+            if len(flag) == 3:
+                graphs = dgl.unbatch(batch_graphs)
+                for graph in graphs:
+                    num_nodes.append(graph.number_o
