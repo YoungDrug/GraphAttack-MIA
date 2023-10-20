@@ -35,4 +35,24 @@ def train_epoch_sparse(model, optimizer, device, data_loader, epoch):
         optimizer.step()
         epoch_loss += loss.detach().item()
         epoch_train_acc += accuracy(batch_scores, batch_labels)
-        nb_data
+        nb_data += batch_labels.size(0)
+    epoch_loss /= (iter + 1)
+    epoch_train_acc /= nb_data
+    
+    return epoch_loss, epoch_train_acc, optimizer
+
+
+def evaluate_network_sparse(model, device, data_loader, epoch):
+    model.eval()
+    epoch_test_loss = 0
+    epoch_test_acc = 0
+    nb_data = 0
+    train_posterior = []
+    train_labels = []
+    flag = []
+    num_nodes, num_edges = [],[]
+
+    if type(epoch) is str:
+        flag = epoch.split('|')
+    with torch.no_grad():
+        for it
