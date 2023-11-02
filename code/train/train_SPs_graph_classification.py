@@ -64,4 +64,14 @@ def evaluate_network_sparse(model, device, data_loader, epoch):
             if len(flag) == 3:
                 graphs = dgl.unbatch(batch_graphs)
                 for graph in graphs:
-                    num_nodes.append(graph.number_o
+                    num_nodes.append(graph.number_of_nodes())
+                    num_edges.append(graph.number_of_edges())
+                for posterior in F.softmax(batch_scores, dim=1).detach().cpu().numpy().tolist():
+                    train_posterior.append(posterior)
+                    train_labels.append(int(flag[0]))
+
+            loss = model.loss(batch_scores, batch_labels) 
+            epoch_test_loss += loss.detach().item()
+            epoch_test_acc += accuracy(batch_scores, batch_labels)
+            nb_data += batch_labels.size(0)
+        epoch_test_loss /= (ite
