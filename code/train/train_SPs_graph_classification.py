@@ -74,4 +74,12 @@ def evaluate_network_sparse(model, device, data_loader, epoch):
             epoch_test_loss += loss.detach().item()
             epoch_test_acc += accuracy(batch_scores, batch_labels)
             nb_data += batch_labels.size(0)
-        epoch_test_loss /= (ite
+        epoch_test_loss /= (iter + 1)
+        epoch_test_acc /= nb_data
+        # Save Posteriors
+        if len(flag) == 3:
+            x_save_path = flag[2] + '/' + flag[1] + '_X_train_Label_' + str(flag[0]) + '.pickle'
+            y_save_path = flag[2] + '/' + flag[1] + '_y_train_Label_' + str(flag[0]) + '.pickle'
+            num_node_save_path = flag[2] + '/' + flag[1] + '_num_node_' + str(flag[0]) + '.pickle'
+            num_edge_save_path = flag[2] + '/' + flag[1] + '_num_edge_' + str(flag[0]) + '.pickle'
+            print("save_path:",x_s
