@@ -82,4 +82,21 @@ def evaluate_network_sparse(model, device, data_loader, epoch):
             y_save_path = flag[2] + '/' + flag[1] + '_y_train_Label_' + str(flag[0]) + '.pickle'
             num_node_save_path = flag[2] + '/' + flag[1] + '_num_node_' + str(flag[0]) + '.pickle'
             num_edge_save_path = flag[2] + '/' + flag[1] + '_num_edge_' + str(flag[0]) + '.pickle'
-            print("save_path:",x_s
+            print("save_path:",x_save_path,y_save_path)
+            pickle.dump(np.array(train_posterior), open(x_save_path, 'wb'))
+            pickle.dump(np.array(train_labels), open(y_save_path, 'wb'))
+            pickle.dump(np.array(num_nodes), open(num_node_save_path, 'wb'))
+            pickle.dump(np.array(num_edges), open(num_edge_save_path, 'wb'))
+    return epoch_test_loss, epoch_test_acc
+
+
+
+
+
+"""
+    For WL-GNNs
+"""
+def train_epoch_dense(model, optimizer, device, data_loader, epoch, batch_size):
+    model.train()
+    epoch_loss = 0
+    epoch
