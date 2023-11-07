@@ -99,4 +99,20 @@ def evaluate_network_sparse(model, device, data_loader, epoch):
 def train_epoch_dense(model, optimizer, device, data_loader, epoch, batch_size):
     model.train()
     epoch_loss = 0
-    epoch
+    epoch_train_acc = 0
+    nb_data = 0
+    gpu_mem = 0
+    optimizer.zero_grad()
+    for iter, (x_with_node_feat, labels) in enumerate(data_loader):
+        x_with_node_feat = x_with_node_feat.to(device)
+        labels = labels.to(device)
+        
+        scores = model.forward(x_with_node_feat)
+        loss = model.loss(scores, labels) 
+        loss.backward()
+        
+        if not (iter%batch_size):
+            optimizer.step()
+            optimizer.zero_grad()
+            
+        epoch_loss += loss.detach
