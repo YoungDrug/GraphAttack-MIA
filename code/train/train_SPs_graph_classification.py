@@ -115,4 +115,19 @@ def train_epoch_dense(model, optimizer, device, data_loader, epoch, batch_size):
             optimizer.step()
             optimizer.zero_grad()
             
-        epoch_loss += loss.detach
+        epoch_loss += loss.detach().item()
+        epoch_train_acc += accuracy(scores, labels)
+        nb_data += labels.size(0)
+    epoch_loss /= (iter + 1)
+    epoch_train_acc /= nb_data
+    
+    return epoch_loss, epoch_train_acc, optimizer
+
+def evaluate_network_dense(model, device, data_loader, epoch):
+    model.eval()
+    epoch_test_loss = 0
+    epoch_test_acc = 0
+    nb_data = 0
+    with torch.no_grad():
+        for iter, (x_with_node_feat, labels) in enumerate(data_loader):
+            x_with_node_feat = x_with_node_feat
