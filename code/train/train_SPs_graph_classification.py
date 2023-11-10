@@ -130,4 +130,15 @@ def evaluate_network_dense(model, device, data_loader, epoch):
     nb_data = 0
     with torch.no_grad():
         for iter, (x_with_node_feat, labels) in enumerate(data_loader):
-            x_with_node_feat = x_with_node_feat
+            x_with_node_feat = x_with_node_feat.to(device)
+            labels = labels.to(device)
+            
+            scores = model.forward(x_with_node_feat)
+            loss = model.loss(scores, labels) 
+            epoch_test_loss += loss.detach().item()
+            epoch_test_acc += accuracy(scores, labels)
+            nb_data += labels.size(0)
+        epoch_test_loss /= (iter + 1)
+        epoch_test_acc /= nb_data
+        
+    return epoch_test_loss, epoch_test_acc
