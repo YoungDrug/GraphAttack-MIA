@@ -17,4 +17,19 @@ def cleaner_main(filename):
 	print('Convert ' + file_notebook + ' to ' + file_python)
 	subprocess.check_output('jupyter nbconvert --to script ' + str(file_notebook) , shell=True)
 
-	pr
+	print('Clean ' + file_python)
+
+	# open file
+	with open(file_python, "r") as f_in:
+	    lines_in = f_in.readlines()
+
+	# remove cell indices
+	lines_in = [ line for i,line in enumerate(lines_in) if '# In[' not in line ]
+
+	# remove comments
+	lines_in = [ line for i,line in enumerate(lines_in) if line[0]!='#' ]
+
+	# remove "in_ipynb()" function
+	idx_start_fnc = next((i for i, x in enumerate(lines_in) if 'def in_ipynb' in x), None)
+	if idx_start_fnc!=None:
+	    idx_end_fnc = idx_start_fnc + next((i for i, x in enumerate(lines_in[idx_start_fn
