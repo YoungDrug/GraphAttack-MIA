@@ -1,0 +1,7 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 0
+    },
+    
+    "model":
