@@ -59,4 +59,13 @@ def cleaner_main(filename):
 	    else:
 	        run = False
        
-	# remove "if notebook_mode==True" bl
+	# remove "if notebook_mode==True" block - double indents
+	idx_start_fnc = next((i for i, x in enumerate(lines_in) if x[:20]=='    if notebook_mode'), None)
+	if idx_start_fnc!=None:
+		idx_end_fnc = idx_start_fnc + next((i for i, x in enumerate(lines_in[idx_start_fnc+1:]) if x[:8] not in ['\n','        ']), None)  
+		lines_in = [ line for i,line in enumerate(lines_in) if i not in range(idx_start_fnc,idx_end_fnc+1) ]
+
+	# prepare main() for terminal mode
+	idx = next((i for i, x in enumerate(lines_in) if 'def main' in x), None)
+	if idx!=None: lines_in[idx] = 'def main():'
+	idx = next((i fo
