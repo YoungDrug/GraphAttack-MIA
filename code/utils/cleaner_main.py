@@ -68,4 +68,14 @@ def cleaner_main(filename):
 	# prepare main() for terminal mode
 	idx = next((i for i, x in enumerate(lines_in) if 'def main' in x), None)
 	if idx!=None: lines_in[idx] = 'def main():'
-	idx = next((i fo
+	idx = next((i for i, x in enumerate(lines_in) if x[:5]=='else:'), None)
+	if idx!=None: lines_in.pop(idx)
+	idx = next((i for i, x in enumerate(lines_in) if x[:10]=='    main()'), None)
+	if idx!=None: lines_in[idx] = 'main()'
+
+	# remove notebook variables
+	idx = next((i for i, x in enumerate(lines_in) if 'use_gpu = True' in x), None)
+	if idx!=None: lines_in.pop(idx)
+	idx = next((i for i, x in enumerate(lines_in) if 'gpu_id = -1' in x), None)
+	if idx!=None: lines_in.pop(idx)
+	idx = next((i for
