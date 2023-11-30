@@ -78,4 +78,25 @@ def cleaner_main(filename):
 	if idx!=None: lines_in.pop(idx)
 	idx = next((i for i, x in enumerate(lines_in) if 'gpu_id = -1' in x), None)
 	if idx!=None: lines_in.pop(idx)
-	idx = next((i for
+	idx = next((i for i, x in enumerate(lines_in) if 'device = None' in x), None)
+	if idx!=None: lines_in.pop(idx)
+	run = True
+	while run:
+		idx = next((i for i, x in enumerate(lines_in) if x[:10]=='MODEL_NAME'), None)
+		if idx!=None: 
+			lines_in.pop(idx)
+		else:
+			run = False
+
+	# save clean file
+	lines_out = str()
+	for line in lines_in: lines_out += line
+	with open(file_python, 'w') as f_out:
+	    f_out.write(lines_out)
+	    
+	print('Done. ')
+
+
+
+
+
