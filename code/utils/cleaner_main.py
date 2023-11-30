@@ -32,4 +32,12 @@ def cleaner_main(filename):
 	# remove "in_ipynb()" function
 	idx_start_fnc = next((i for i, x in enumerate(lines_in) if 'def in_ipynb' in x), None)
 	if idx_start_fnc!=None:
-	    idx_end_fnc = idx_start_fnc + next((i for i, x in enumerate(lines_in[idx_start_fn
+	    idx_end_fnc = idx_start_fnc + next((i for i, x in enumerate(lines_in[idx_start_fnc+1:]) if x[:4] not in ['\n','    ']), None)  
+	    lines_in = [ line for i,line in enumerate(lines_in) if i not in range(idx_start_fnc,idx_end_fnc+1) ]
+	list_elements_to_remove = ['in_ipynb()', 'print(notebook_mode)']
+	for elem in list_elements_to_remove:
+	    lines_in = [ line for i,line in enumerate(lines_in) if elem not in line ]
+	    
+	# unindent "if notebook_mode==False" block
+	idx_start_fnc = next((i for i, x in enumerate(lines_in) if 'if notebook_mode==False' in x), None)
+	i
