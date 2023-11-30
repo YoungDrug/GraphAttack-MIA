@@ -22,4 +22,15 @@
         "min_lr": 1e-5,
         "weight_decay": 0.0,
         "print_epoch_interval": 5,
-        "max_time": 
+        "max_time": 12
+    },
+    
+    "net_params": {
+        "L": 3,
+        "hidden_dim": 82,
+        "depth_of_mlp": 2,
+        "residual": false,
+        "dropout": 0.0,
+        "layer_norm": false
+    }
+}
