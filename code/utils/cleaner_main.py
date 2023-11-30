@@ -40,4 +40,13 @@ def cleaner_main(filename):
 	    
 	# unindent "if notebook_mode==False" block
 	idx_start_fnc = next((i for i, x in enumerate(lines_in) if 'if notebook_mode==False' in x), None)
-	i
+	if idx_start_fnc!=None:
+	    idx_end_fnc = idx_start_fnc + next((i for i, x in enumerate(lines_in[idx_start_fnc+1:]) if x[:8] not in ['\n','        ']), None)
+	    for i in range(idx_start_fnc,idx_end_fnc+1):
+	        lines_in[i] = lines_in[i][4:]
+	    lines_in.pop(idx_start_fnc)
+	list_elements_to_remove = ['# notebook mode', '# terminal mode']
+	for elem in list_elements_to_remove:
+	    lines_in = [ line for i,line in enumerate(lines_in) if elem not in line ]
+
+	# remove remaining "if notebook_mode==True" blo
