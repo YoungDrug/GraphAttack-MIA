@@ -49,4 +49,14 @@ def cleaner_main(filename):
 	for elem in list_elements_to_remove:
 	    lines_in = [ line for i,line in enumerate(lines_in) if elem not in line ]
 
-	# remove remaining "if notebook_mode==True" blo
+	# remove remaining "if notebook_mode==True" blocks - single indent
+	run = True
+	while run:
+	    idx_start_fnc = next((i for i, x in enumerate(lines_in) if x[:16]=='if notebook_mode'), None)
+	    if idx_start_fnc!=None:
+	        idx_end_fnc = idx_start_fnc + next((i for i, x in enumerate(lines_in[idx_start_fnc+1:]) if x[:4] not in ['\n','    ']), None)  
+	        lines_in = [ line for i,line in enumerate(lines_in) if i not in range(idx_start_fnc,idx_end_fnc+1) ]
+	    else:
+	        run = False
+       
+	# remove "if notebook_mode==True" bl
