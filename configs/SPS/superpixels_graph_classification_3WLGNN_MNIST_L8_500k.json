@@ -1,3 +1,4 @@
+
 {
     "gpu": {
         "use": true,
@@ -18,7 +19,7 @@
         "test_size": 2500,
         "init_lr": 0.001,
         "lr_reduce_factor": 0.5,
-        "lr_schedule_patience": 2000,
+        "lr_schedule_patience": 2000
         "min_lr": 1e-5,
         "weight_decay": 0.0,
         "print_epoch_interval": 5,
@@ -26,10 +27,10 @@
     },
     
     "net_params": {
-        "L": 3,
-        "hidden_dim": 82,
+        "L": 8,
+        "hidden_dim": 96,
         "depth_of_mlp": 2,
-        "residual": false,
+        "residual": true,
         "dropout": 0.0,
         "layer_norm": false
     }
