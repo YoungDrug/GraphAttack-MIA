@@ -33,4 +33,8 @@
         "readout": "mean",
         "n_heads": 8,
         "in_feat_dropout": 0.0,
-        "dropout"
+        "dropout": 0.0,
+        "batch_norm": true,
+        "self_loop": false
+    }
+}

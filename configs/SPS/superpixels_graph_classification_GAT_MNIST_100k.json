@@ -1,0 +1,22 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 0
+    },
+    
+    "model": "GAT",
+    "dataset": "MNIST",
+    
+    "out_dir": "out/superpixels_graph_classification/",
+    
+    "params": {
+        "seed": 41,
+        "epochs": 1000,
+        "batch_size": 128,
+        "train_size": 2500,
+        "val_size": 2500,
+        "test_size": 2500,
+        "init_lr": 0.001,
+        "lr_reduce_factor": 0.5,
+        "lr_schedule_patience": 2000,
+        "min_lr": 1e-5,
