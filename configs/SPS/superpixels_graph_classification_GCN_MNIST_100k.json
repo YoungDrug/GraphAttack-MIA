@@ -1,10 +1,11 @@
+
 {
     "gpu": {
         "use": true,
-        "id": 0
+        "id": 1
     },
     
-    "model": "GAT",
+    "model": "GCN",
     "dataset": "MNIST",
     
     "out_dir": "out/superpixels_graph_classification/",
@@ -27,11 +28,10 @@
     
     "net_params": {
         "L": 4,
-        "hidden_dim": 19,
-        "out_dim": 152,
+        "hidden_dim": 146,
+        "out_dim": 146,
         "residual": true,
         "readout": "mean",
-        "n_heads": 8,
         "in_feat_dropout": 0.0,
         "dropout": 0.0,
         "batch_norm": true,
