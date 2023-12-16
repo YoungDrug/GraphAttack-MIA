@@ -1,0 +1,13 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 0
+    },
+    
+    "model": "GIN",
+    "dataset": "MNIST",
+    
+    "out_dir": "out/superpixels_graph_classification/",
+    
+    "params": {
+        "seed": 4
