@@ -1,0 +1,15 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 0
+    },
+    
+    "model": "GatedGCN",
+    "dataset": "CIFAR10",
+    
+    "out_dir": "out/superpixels_graph_classification/",
+    
+    "params": {
+        "seed": 41,
+        "epochs": 1000,
+        "ba

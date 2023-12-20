@@ -29,4 +29,13 @@
         "L": 4,
         "hidden_dim": 110,
         "out_dim": 110,
-        "res
+        "residual": true,
+        "readout": "sum",
+        "n_mlp_GIN": 2,
+        "learn_eps_GIN": true,
+        "neighbor_aggr_GIN": "sum",
+        "in_feat_dropout": 0.0,
+        "dropout": 0.0,
+        "batch_norm": true
+    }
+}
