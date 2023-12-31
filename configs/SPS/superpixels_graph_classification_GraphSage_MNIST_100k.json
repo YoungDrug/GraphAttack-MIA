@@ -1,3 +1,4 @@
+
 {
     "gpu": {
         "use": true,
@@ -5,7 +6,7 @@
     },
     
     "model": "GraphSage",
-    "dataset": "CIFAR10",
+    "dataset": "MNIST",
     
     "out_dir": "out/superpixels_graph_classification/",
     
