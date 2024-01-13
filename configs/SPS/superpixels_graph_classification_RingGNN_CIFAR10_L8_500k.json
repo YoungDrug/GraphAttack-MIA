@@ -1,3 +1,4 @@
+
 {
     "gpu": {
         "use": true,
@@ -26,10 +27,10 @@
     },
     
     "net_params": {
-        "L": 2,
-        "hidden_dim": 44,
+        "L": 8,
+        "hidden_dim": 37,
         "radius": 2,
-        "residual": false,
+        "residual": true,
         "dropout": 0.0,
         "layer_norm": false
     }
