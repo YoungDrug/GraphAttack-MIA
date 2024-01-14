@@ -1,0 +1,15 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 1
+    },
+    
+    "model": "3WLGNN",
+    "dataset": "DD",
+    
+    "out_dir": "out/TUs_graph_classification/",
+
+    "params": {
+        "seed": 41,
+        "epochs": 1000,
+        "
