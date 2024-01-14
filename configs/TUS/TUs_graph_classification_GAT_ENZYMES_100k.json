@@ -1,18 +1,19 @@
+
 {
     "gpu": {
         "use": true,
         "id": 0
     },
     
-    "model": "3WLGNN",
+    "model": "GAT",
     "dataset": "ENZYMES",
     
     "out_dir": "out/TUs_graph_classification/",
-
+    
     "params": {
         "seed": 41,
         "epochs": 1000,
-        "batch_size": 4,
+        "batch_size": 20,
         "train_size": 100,
         "val_size": 100,
         "test_size": 100,
@@ -26,11 +27,15 @@
     },
     
     "net_params": {
-        "L": 3,
-        "hidden_dim": 80,
-        "depth_of_mlp": 2,
-        "residual": false,
+        "L": 4,
+        "hidden_dim": 18,
+        "out_dim": 144,
+        "residual": true,
+        "readout": "mean",
+        "n_heads": 8,
+        "in_feat_dropout": 0.0,
         "dropout": 0.0,
-        "layer_norm": false
+        "batch_norm": true,
+        "self_loop": false
     }
 }

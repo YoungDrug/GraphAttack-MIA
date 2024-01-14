@@ -1,0 +1,10 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 1
+    },
+    
+    "model": "GCN",
+    "dataset": "DD",
+    
+    "out_dir": "results/TUs_graph_class
