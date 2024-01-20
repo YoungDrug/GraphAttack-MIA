@@ -1,0 +1,20 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 0
+    },
+    
+    "model": "GCN",
+    "dataset": "ENZYMES",
+    
+    "out_dir": "out/TUs_graph_classification/",
+
+    "params": {
+        "seed": 41,
+        "epochs": 1000,
+        "batch_size": 20,
+        "train_size": 100,
+        "val_size": 100,
+        "test_size": 100,
+        "init_lr": 7e-4,
+   
