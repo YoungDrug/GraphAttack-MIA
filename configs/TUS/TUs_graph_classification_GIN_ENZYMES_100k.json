@@ -1,0 +1,13 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 0
+    },
+    
+    "model": "GIN",
+    "dataset": "ENZYMES",
+    
+    "out_dir": "out/TUs_graph_classification/",
+
+    "params": {
+        "seed": 
