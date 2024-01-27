@@ -1,0 +1,14 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 0
+    },
+    
+    "model": "GatedGCN",
+    "dataset": "PROTEINS_full",
+    
+    "out_dir": "results/TUs_graph_classification/",
+    
+    "params": {
+        "seed": 41,
+        "epochs": 1000,
