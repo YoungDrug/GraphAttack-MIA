@@ -1,0 +1,10 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 1
+    },
+    
+    "model": "GraphSage",
+    "dataset": "ENZYMES",
+    
+    "out_dir": "out/TUs_g
