@@ -1,0 +1,18 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 1
+    },
+    
+    "model": "MLP",
+    "dataset": "DD",
+    
+    "out_dir": "results/TUs_graph_classification/",
+
+    "params": {
+        "seed": 41,
+        "epochs": 1000,
+        "batch_size": 20,
+        "train_size": 110,
+        "val_size": 110,
+        "test_size

@@ -1,3 +1,4 @@
+
 {
     "gpu": {
         "use": true,
@@ -5,18 +6,18 @@
     },
     
     "model": "GraphSage",
-    "dataset": "ENZYMES",
+    "dataset": "PROTEINS_full",
     
-    "out_dir": "out/TUs_graph_classification/",
+    "out_dir": "results/TUs_graph_classification/",
     
     "params": {
         "seed": 41,
         "epochs": 1000,
         "batch_size": 20,
-        "train_size": 100,
-        "val_size": 100,
-        "test_size": 100,
-        "init_lr": 7e-4,
+        "train_size": 110,
+        "val_size": 110,
+        "test_size": 110,
+        "init_lr": 7e-5,
         "lr_reduce_factor": 0.5,
         "lr_schedule_patience": 2000,
         "min_lr": 1e-6,
@@ -27,8 +28,8 @@
     
     "net_params": {
         "L": 4,
-        "hidden_dim": 90,
-        "out_dim": 90,
+        "hidden_dim": 88,
+        "out_dim": 88,
         "residual": true,
         "readout": "mean",
         "in_feat_dropout": 0.0,
