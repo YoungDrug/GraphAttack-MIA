@@ -1,0 +1,17 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 1
+    },
+    
+    "model": "MoNet",
+    "dataset": "DD",
+    
+    "out_dir": "out/TUs_graph_classification/",
+
+    "params": {
+        "seed": 41,
+        "epochs": 1000,
+        "batch_size": 20,
+        "train_size": 110,
+        "val_size": 1
