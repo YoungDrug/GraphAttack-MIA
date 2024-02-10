@@ -1,0 +1,22 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 0
+    },
+    
+    "model": "RingGNN",
+    "dataset": "ENZYMES",
+    
+    "out_dir": "out/TUs_graph_classification/",
+
+    "params": {
+        "seed": 41,
+        "epochs": 1000,
+        "train_size": 100,
+        "val_size": 100,
+        "test_size": 100,
+        "batch_size": 4,
+        "init_lr": 1e-4,
+        "lr_reduce_factor": 0.5,
+        "lr_schedule_patience": 2000,
+    
