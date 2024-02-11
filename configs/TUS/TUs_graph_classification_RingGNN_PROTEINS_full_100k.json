@@ -31,4 +31,6 @@
         "radius": 2,
         "residual": false,
         "dropout": 0.0,
-        "layer
+        "layer_norm": false
+    }
+}
