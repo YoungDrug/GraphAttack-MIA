@@ -1,0 +1,14 @@
+{
+    "gpu": {
+        "use": true,
+        "id": 0
+    },
+    
+    "model": "RingGNN",
+    "dataset": "PROTEINS_full",
+    
+    "out_dir": "out/TUs_graph_classification/",
+
+    "params": {
+        "seed": 41,
+        "epochs"
