@@ -87,4 +87,16 @@ python $code --dataset $dataset --gpu_id 3 --seed $seed3 --config 'configs/super
 wait" C-m
 tmux send-keys "
 python $code --dataset $dataset --gpu_id 0 --seed $seed0 --config 'configs/superpixels_graph_classification_RingGNN_MNIST_100k.json' &
-python $code --datas
+python $code --dataset $dataset --gpu_id 1 --seed $seed1 --config 'configs/superpixels_graph_classification_RingGNN_MNIST_100k.json' &
+python $code --dataset $dataset --gpu_id 2 --seed $seed2 --config 'configs/superpixels_graph_classification_RingGNN_MNIST_100k.json' &
+python $code --dataset $dataset --gpu_id 3 --seed $seed3 --config 'configs/superpixels_graph_classification_RingGNN_MNIST_100k.json' &
+wait" C-m
+tmux send-keys "tmux kill-session -t benchmark" C-m
+
+
+
+
+
+
+
+
