@@ -12,4 +12,4 @@ run() {
 }
 # $1 defines the number will be repeat
 # $2 defines the attack python file will be executed
-run "$1" $python_path -W ign
+run "$1" $python_path -W ignore $2
