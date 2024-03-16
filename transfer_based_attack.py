@@ -17,4 +17,11 @@ def transfer_based_attack(epochs):
 
     # GCN_PROTEINS_full_GPU0_03h11m51s_on_Jan_28_2021 0.7707677769	0.5766666667
     attack_base_path = 'data/statis/GCN/GCN_ENZYMES_GPU0_16h40m29s_on_Jun_08_2021/'
-    target_base_path = 'data/s
+    target_base_path = 'data/statis/GCN/GCN_DD_GPU1_16h26m32s_on_Jun_08_2021/'
+    # GCN_ENZYMES_GPU0_16h40m29s_on_Jun_08_2021 -> GCN_DD_GPU1_16h26m32s_on_Jun_08_2021
+    # For attack dataset
+    if os.listdir(attack_base_path).__contains__("S_RUN_"):
+        S_X_train_in = load_pickled_data(attack_base_path + 'S_RUN_/S_X_train_Label_1.pickle')
+        S_y_train_in = load_pickled_data(attack_base_path + 'S_RUN_/S_y_train_Label_1.pickle')
+        S_X_train_out = load_pickled_data(attack_base_path + 'S_RUN_/S_X_train_Label_0.pickle')
+        S_y_
