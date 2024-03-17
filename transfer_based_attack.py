@@ -30,4 +30,10 @@ def transfer_based_attack(epochs):
         S_Label_0_num_edges = load_pickled_data(attack_base_path + 'S_RUN_/S_num_edge_0.pickle')
         S_Label_1_num_edges = load_pickled_data(attack_base_path + 'S_RUN_/S_num_edge_1.pickle')
     else:
-        S_X_train_in = load_pickled_data(attack_b
+        S_X_train_in = load_pickled_data(attack_base_path + 'X_train_Label_1.pickle')
+        S_y_train_in = load_pickled_data(attack_base_path + 'y_train_Label_1.pickle')
+        S_X_train_out = load_pickled_data(attack_base_path + 'X_train_Label_0.pickle')
+        S_y_train_out = load_pickled_data(attack_base_path + 'y_train_Label_0.pickle')
+    # For target Dataset
+    if os.listdir(target_base_path).__contains__("T_RUN_"):
+        T_X_train_in = load_pickled_data(target_base_path + 'T_RUN_/T_X_train_L
