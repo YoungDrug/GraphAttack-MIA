@@ -56,4 +56,11 @@ def transfer_based_attack(epochs):
     X_attack_nodes = torch.FloatTensor(np.concatenate((S_Label_1_num_nodes, S_Label_0_num_nodes), axis=0))
     X_attack_edges = torch.FloatTensor(np.concatenate((S_Label_1_num_edges, S_Label_0_num_edges), axis=0))
 
-    y_target = torch.FloatTensor(np.
+    y_target = torch.FloatTensor(np.concatenate((T_y_train_in, T_y_train_out), axis=0))
+    y_attack = torch.FloatTensor(np.concatenate((S_y_train_in, S_y_train_out), axis=0))
+    X_target = torch.FloatTensor(np.concatenate((T_X_train_in, T_X_train_out), axis=0))
+    X_target_nodes = torch.FloatTensor(np.concatenate((T_Label_1_num_nodes, T_Label_0_num_nodes), axis=0))
+    X_target_edges = torch.FloatTensor(np.concatenate((T_Label_1_num_edges, T_Label_0_num_edges), axis=0))
+
+    feature_nums = min(X_attack.shape[1],X_target.shape[1])
+    # print("feature_nums
