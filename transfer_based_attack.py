@@ -42,4 +42,12 @@ def transfer_based_attack(epochs):
         T_y_train_out = load_pickled_data(target_base_path + 'T_RUN_/T_y_train_Label_0.pickle')
         T_Label_0_num_nodes = load_pickled_data(target_base_path + 'T_RUN_/T_num_node_0.pickle')
         T_Label_1_num_nodes = load_pickled_data(target_base_path + 'T_RUN_/T_num_node_1.pickle')
-        T_Label_0_num
+        T_Label_0_num_edges = load_pickled_data(target_base_path + 'T_RUN_/T_num_edge_0.pickle')
+        T_Label_1_num_edges = load_pickled_data(target_base_path + 'T_RUN_/T_num_edge_1.pickle')
+    else:
+        T_X_train_in = load_pickled_data(target_base_path + 'X_train_Label_1.pickle')
+        T_y_train_in = load_pickled_data(target_base_path + 'y_train_Label_1.pickle')
+        T_X_train_out = load_pickled_data(target_base_path + 'X_train_Label_0.pickle')
+        T_y_train_out = load_pickled_data(target_base_path + 'y_train_Label_0.pickle')
+
+ 
