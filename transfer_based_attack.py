@@ -50,4 +50,10 @@ def transfer_based_attack(epochs):
         T_X_train_out = load_pickled_data(target_base_path + 'X_train_Label_0.pickle')
         T_y_train_out = load_pickled_data(target_base_path + 'y_train_Label_0.pickle')
 
- 
+    # print("T_X_train_in Size:{} and T_X_train_out Size:{}".format(len(T_X_train_in), len(T_X_train_out)))
+    # Prepare Dataset
+    X_attack = torch.FloatTensor(np.concatenate((S_X_train_in, S_X_train_out), axis=0))
+    X_attack_nodes = torch.FloatTensor(np.concatenate((S_Label_1_num_nodes, S_Label_0_num_nodes), axis=0))
+    X_attack_edges = torch.FloatTensor(np.concatenate((S_Label_1_num_edges, S_Label_0_num_edges), axis=0))
+
+    y_target = torch.FloatTensor(np.
