@@ -84,4 +84,18 @@ def transfer_based_attack(epochs):
             optimizer.zero_grad()
             y_pred = attack_model(X_batch)
             loss = criterion(y_pred, y_batch.unsqueeze(1))
-            acc = binary_acc(y_pred, y_ba
+            acc = binary_acc(y_pred, y_batch.unsqueeze(1))
+            loss.backward()
+            optimizer.step()
+
+            epoch_loss += loss.item()
+            epoch_acc += acc.item()
+        all_acc.append(epoch_acc)
+    y_pred_list = []
+    attack_model.eval()
+    correct_node_list, correct_edge_list = [],[]
+    incorrect_node_list, incorrect_edge_list = [],[]
+    with torch.no_grad():
+        for X_batch, num_node, num_edge,y in zip(target_loader, X_target_nodes, X_target_edges, y_target):
+            y_test_pred = attack_model(X_batch)
+            y_test_pred = t
