@@ -98,4 +98,12 @@ def transfer_based_attack(epochs):
     with torch.no_grad():
         for X_batch, num_node, num_edge,y in zip(target_loader, X_target_nodes, X_target_edges, y_target):
             y_test_pred = attack_model(X_batch)
-            y_test_pred = t
+            y_test_pred = torch.sigmoid(y_test_pred)
+            y_pred_tag = torch.round(y_test_pred)
+            if y == y_pred_tag.detach().item():
+                correct_node_list.append(num_node.detach().item())
+                correct_edge_list.append(num_edge.detach().item())
+            else:
+                incorrect_node_list.append(num_node.detach().item())
+                incorrect_edge_list.append(num_edge.detach().item())
+            y_pred_list.append(y_pred_tag.cpu().numpy()[
