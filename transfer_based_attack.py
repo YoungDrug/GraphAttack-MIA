@@ -63,4 +63,14 @@ def transfer_based_attack(epochs):
     X_target_edges = torch.FloatTensor(np.concatenate((T_Label_1_num_edges, T_Label_0_num_edges), axis=0))
 
     feature_nums = min(X_attack.shape[1],X_target.shape[1])
-    # print("feature_nums
+    # print("feature_nums:{}".format(feature_nums))
+    selected_X_target = select_top_k(X_target, feature_nums)
+    selected_X_attack = select_top_k(X_attack, feature_nums)
+
+    # selected_X_attack, selected_X_target = X_attack,X_target
+    n_in = selected_X_attack.shape[1]
+    attack_model = MLP(in_size=n_in, out_size=1, hidden_1=64, hidden_2=64)
+    criterion = torch.nn.BCEWithLogitsLoss()
+    optimizer = torch.optim.Adam(attack_model.parameters(), lr=0.0001)
+    attack_data = trainData(selected_X_attack, y_attack)
+    target_da
