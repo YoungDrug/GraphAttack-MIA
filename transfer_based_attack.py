@@ -73,4 +73,15 @@ def transfer_based_attack(epochs):
     criterion = torch.nn.BCEWithLogitsLoss()
     optimizer = torch.optim.Adam(attack_model.parameters(), lr=0.0001)
     attack_data = trainData(selected_X_attack, y_attack)
-    target_da
+    target_data = testData(selected_X_target)
+    train_loader = DataLoader(dataset=attack_data, batch_size=64, shuffle=True)
+    target_loader = DataLoader(dataset=target_data, batch_size=1)
+    all_acc = []
+    for i in range(epochs):
+        epoch_loss = 0
+        epoch_acc = 0
+        for X_batch, y_batch in train_loader:
+            optimizer.zero_grad()
+            y_pred = attack_model(X_batch)
+            loss = criterion(y_pred, y_batch.unsqueeze(1))
+            acc = binary_acc(y_pred, y_ba
