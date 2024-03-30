@@ -106,4 +106,14 @@ def transfer_based_attack(epochs):
             else:
                 incorrect_node_list.append(num_node.detach().item())
                 incorrect_edge_list.append(num_edge.detach().item())
-            y_pred_list.append(y_pred_tag.cpu().numpy()[
+            y_pred_list.append(y_pred_tag.cpu().numpy()[0])
+    y_pred_list = [a.squeeze().tolist() for a in y_pred_list]
+    report = classification_report(y_target, y_pred_list)
+    precision, recall, fscore, support = precision_recall_fscore_support(y_target,
+                                                                         y_pred_list, average='macro')
+    print(precision, recall)
+
+    # print("correct_node_list:",correct_node_list)
+    # print("correct_edge_list:",correct_edge_list)
+    # print("incorrect_node_list:",incorrect_node_list)
+    # print("i
