@@ -116,4 +116,11 @@ def transfer_based_attack(epochs):
     # print("correct_node_list:",correct_node_list)
     # print("correct_edge_list:",correct_edge_list)
     # print("incorrect_node_list:",incorrect_node_list)
-    # print("i
+    # print("incorrect_edge_list:",incorrect_edge_list)
+
+    print(np.mean(correct_node_list), np.mean(correct_edge_list))
+    print(np.mean(incorrect_node_list), np.mean(incorrect_edge_list))
+
+
+if __name__ == '__main__':
+    transfer_based_attack(300)
