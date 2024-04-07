@@ -17,4 +17,11 @@ You may need to upgrade the **Lasagne** library if you encounter a version misma
 Use the following commands to train the victim GCN model.
 
 For Dataset DD, PROTEINS_full, ENZYMES:
-<pre>sh run_TUs_target_shadow_training.sh --number 10 --start_epoch 100 --dataset D
+<pre>sh run_TUs_target_shadow_training.sh --number 10 --start_epoch 100 --dataset DD</pre>
+
+And for SuperPixel Converted Graph Dataset CIFAR10, MNIST:
+<pre>sh run_SPs_target_shadow_training.sh --number 10 --start_epoch 100 --dataset MNIST</pre>
+
+The '--number' is the number of repeated model training. The '--start_epoch' is the minimum number of interactions to train the model. The '--dataset' is the dataset name of model training.
+
+For detailed code execution, refer to 'main_SPs_graph_classification.py' and 'main_TUs_graph_classification.py' in t
