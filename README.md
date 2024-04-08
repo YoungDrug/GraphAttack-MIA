@@ -24,4 +24,19 @@ And for SuperPixel Converted Graph Dataset CIFAR10, MNIST:
 
 The '--number' is the number of repeated model training. The '--start_epoch' is the minimum number of interactions to train the model. The '--dataset' is the dataset name of model training.
 
-For detailed code execution, refer to 'main_SPs_graph_classification.py' and 'main_TUs_graph_classification.py' in t
+For detailed code execution, refer to 'main_SPs_graph_classification.py' and 'main_TUs_graph_classification.py' in the ./code folder.
+
+## Step 2: Train the Attack Model Inferring Graph Sample Membership
+
+Use the following command:
+<pre>sh run_transfer_attach.sh --number 15</pre>
+
+The '--number' is the number of repeated attacks.
+
+For detailed code execution, refer to 'transfer_based_attack.py'.
+
+# Acknowledge
+
+This project references from [benchmarking-gnn](https://github.com/graphdeeplearning/benchmarking-gnns) and [DeeperGCN](https://github.com/lightaime/deep_gcns_torch)
+
+For any queries, feel free to reach out to YoungDrug.
